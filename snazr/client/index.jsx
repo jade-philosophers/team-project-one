@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Test from './components/Test.jsx';
+import { Router, Route, hashHistory } from 'react-router';
+import People from './components/People.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
@@ -16,4 +16,9 @@ class App extends React.Component {
   }
 };
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render((
+  <Router history={hashHistory}>
+    <Route path="/" component={App}/>
+    <Route path="/people" component={People} />
+  </Router>
+), document.getElementById('app'));
