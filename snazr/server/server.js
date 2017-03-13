@@ -1,4 +1,5 @@
 const express = require('express');
+const { client } = require('./cache/redis.js')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -33,6 +34,33 @@ app.use('/bundles', express.static(path.join(__dirname, '/../bundles')));
 app.get('/api/test', function (req, res, next){
   res.send('what the fuck is up');
 });
+
+app.get('/api/toggled_users', function(req, res){
+  //should send a list of all the users that have their discoverability toggled on
+  //with x, y amount of range in terms of longitude & latitude
+  //by retrieving the information from our cache
+  // the information of location is sent through their locations
+  // if there are no locations just give a generic guy called joe back
+  // 
+  let loc = req.body //should hold the data
+
+  res.send('GET RID OF THIS LINE')
+})
+
+app.post('/api/toggled_users', function(req, res){
+  //when a user clicks toggle button on the front end view
+  //send their userid to us, so we can add him to the cache of toggled users
+  let user = req.body
+  client.util.addNew(user);
+
+  res.send('GET RID OF THIS LINE')
+})
+
+app.get('/api/add_connection', function(req, res){
+
+})
+
+
 
 app.listen(port, () => {
   console.log(`Server is listening on ${port}`);

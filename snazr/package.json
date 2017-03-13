@@ -7,11 +7,13 @@
     "start": "nodemon server/server.js",
     "build": "webpack",
     "build/watch": "webpack --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "twatch": "mocha --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mongoose": "^4.8.6",
@@ -20,14 +22,19 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-route": "^1.0.3",
-    "react-router": "^3.0.2"
+    "react-router": "^3.0.2",
+    "redis": "^2.6.5"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
     "babel-preset-latest": "^6.22.0",
     "babel-preset-react": "^6.23.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
+    "redis-mock": "^0.16.0",
+    "supertest": "^3.0.0",
     "webpack": "^2.2.1"
   }
 }
