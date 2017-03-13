@@ -12,7 +12,7 @@ client.on("error", function (err) {
 });
 
 
-console.log('hehe', get)
+
 
 client.util = util
 module.exports.client = client
