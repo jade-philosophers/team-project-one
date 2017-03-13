@@ -34,6 +34,9 @@ app.get('/api/test', function (req, res, next){
   res.send('what the fuck is up');
 });
 
+
+
+
 app.listen(port, () => {
   console.log(`Server is listening on ${port}`);
 });
