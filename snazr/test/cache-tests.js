@@ -36,6 +36,13 @@ describe('should test mock version of redis', function() {
       })
   })
 
+  it('should get us test1 field2 value correctly', function(done){
+      client.hget('test1', 'field2', function(err, result){
+          expect(result).to.equal('world')
+          done()
+      })
+  })
+
 
 });
 

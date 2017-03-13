@@ -1,6 +1,9 @@
 var redis = require("redis"),
     client = redis.createClient();
 
+var { util } = require("./util.js")
+
+
 // if you'd like to select database 3, instead of 0 (default), call
 // client.select(3, function() { /* ... */ });
 
@@ -9,6 +12,10 @@ client.on("error", function (err) {
 });
 
 
+console.log('hehe', get)
+
+client.util = util
+module.exports.client = client
 
 // data is in longitude, latitude format
 //longitude is x axis, latitude is y axis
