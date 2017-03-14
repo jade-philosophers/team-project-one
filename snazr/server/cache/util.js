@@ -1,28 +1,46 @@
 var promise = require('bluebird')
 
 
-const getAllNearByLocation = (data) => {
-    console.log('hello')
+const getAll = (data) => {
+    // console.log('hello')
+    // const xRange = [ data.longitude + 0.02, data.longitude + 0.01, data.longitude - 0.01, 
+    // data.longitude -0.02]
+    // const yRange = [ data.latitude + 0.01, data.latitude + 0.02, data.latitude - 0.01, 
+    // data.latitude - 0.02]
     
 }
 
 const addNew = (data) => new Promise( (resolve, reject) =>{
-// const xRange = [ data.longitude + 0.02, data.longitude + 0.01, data.longitude - 0.01, 
-// data.longitude -0.02]
-// const yRange = [ data.latitude + 0.01, data.latitude + 0.02, data.latitude - 0.01, 
-// data.latitude - 0.02]
-    // client.hkeys(data.longitude, function(err, allLatitutdeInThisLongitude){
-    //     if(allLatitutdeInThisLongitude){
+    // expect data to be { lng:123.22, lat:56.33, id } with 2 digit precision
+    // client.hkeys(data.lng, function(err, lats){
+    //     console.log('all lats are: ', lats)
+    //     if(lats){
     //         // should be a list of all latitude coordinates
     //         // hash: 128.11, key: 50.33, value: [ userid:1235, userid:56789]
-    //         if(allLatitutdeInThisLongitude.includes())
+    //         lats[data.lat] = [...lats[data.lat], data]
     //     }
     // })
-
+    client.hmget(data.lng, data.lat, function(err, peopleList){
+        if(peopleList){
+            let jsonObj = JSON.parse(peopleList)
+            let combinedEntry = [data, ...jsonObj]
+            let stringed = JSON.stringify(combinedEntry)
+            client.hmset(data.lng, data.lat, stringed, function(err, res){
+                if(err) console.log('addNewFunction Error: ', err)
+                console.log('addNewFunction result', res)
+            })
+        } else {
+            let entry = [JSON.stringify(data)]
+            client.hmset(data.lng, data.lat, entry, function(err, res){
+                if(err) console.log('addNewFunction Error: ', err)
+                console.log('addNewFunction result', res)
+            })
+        }
+    })
 })
 
 const util = {
-    get : getAllNearByLocation,
+    get : getAll,
     add : addNew
 }
 

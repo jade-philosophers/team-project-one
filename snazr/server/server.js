@@ -9,6 +9,8 @@ const FB = require('./config/fb');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const Pusher = require('pusher')
+const { pusher } = require('./pusher_secrets.js')
+
 
 
 
@@ -61,8 +63,19 @@ app.post('/api/toggled_users', function(req, res){
   res.send('GET RID OF THIS LINE')
 })
 
-app.get('/api/add_connection', function(req, res){
+app.get('/joined', function(req, res){
+  pusher.trigger('my-channel', 'my-event', {
+    message: "hello world",
+    location : {
+      longitude: 123.11,
+      latitude: 64.33
+    }
+  });
 
+  pusher.trigger('4chan', 'my-event', {
+    message: 'YOU"VE SEEN SOMETHING YOU SHOULDN"T HAVE'
+  })
+  res.send('ok')
 })
 
 

@@ -7,6 +7,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.initPusher()
   }
 
   initPusher(){
@@ -19,6 +20,7 @@ class App extends React.Component {
     var channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
       console.log(data.message);
+      console.log('my loc is: ', data.location)
     });
   }
 
