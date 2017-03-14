@@ -1,15 +1,20 @@
 const express = require('express');
 const { client } = require('./cache/redis.js')
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+// const User = require('./models/users');
 const bodyParser = require('body-parser');
 const path = require('path');
-const User = require('./models/users');
 const app = express();
 const FB = require('./config/fb');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const Pusher = require('pusher')
+
+
+
+
 const port = process.env.PORT || 8000;
-mongoose.connect('mongodb://localhost/snazr');
+// mongoose.connect('mongodb://localhost/snazr');
 
 // passport.use( new FacebookStrategy( {
 //   clientID: FB.FACEBOOK_APP_ID,

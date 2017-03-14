@@ -9,6 +9,19 @@ class App extends React.Component {
     this.state = {};
   }
 
+  initPusher(){
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ac3afe09526e683a87c4', {
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      console.log(data.message);
+    });
+  }
+
   render () {
     return (
       <div>Hello world what up lol </div>

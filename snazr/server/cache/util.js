@@ -1,22 +1,23 @@
 var promise = require('bluebird')
 
-const getAllNearByLocation = () => {
+
+const getAllNearByLocation = (data) => {
     console.log('hello')
     
 }
 
 const addNew = (data) => new Promise( (resolve, reject) =>{
-    const xRange = [ data.longitude + 0.02, data.longitude + 0.01, data.longitude - 0.01, 
-    data.longitude -0.02]
-    const yRange = [ data.latitude + 0.01, data.latitude + 0.02, data.latitude - 0.01, 
-    data.latitude - 0.02]
-    client.hkeys(data.longitude, function(err, allLatitutdeInThisLongitude){
-        if(allLatitutdeInThisLongitude){
-            // should be a list of all latitude coordinates
-            // hash: 128.11, key: 50.33, value: [ userid:1235, userid:56789]
-            if(allLatitutdeInThisLongitude.includes())
-        }
-    })
+// const xRange = [ data.longitude + 0.02, data.longitude + 0.01, data.longitude - 0.01, 
+// data.longitude -0.02]
+// const yRange = [ data.latitude + 0.01, data.latitude + 0.02, data.latitude - 0.01, 
+// data.latitude - 0.02]
+    // client.hkeys(data.longitude, function(err, allLatitutdeInThisLongitude){
+    //     if(allLatitutdeInThisLongitude){
+    //         // should be a list of all latitude coordinates
+    //         // hash: 128.11, key: 50.33, value: [ userid:1235, userid:56789]
+    //         if(allLatitutdeInThisLongitude.includes())
+    //     }
+    // })
 
 })
 
