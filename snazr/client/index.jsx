@@ -1,25 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import People from './components/People.jsx';
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render () {
-    return (
-      <div>Hello world what up lol </div>
-    );
-  }
-};
+import MapWrapper from './components/Map/MapWrapper.jsx';
+import App from './components/App/App.jsx';
 
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App}/>
     <Route path="/people" component={People} />
+    <Route path="/map" component = {MapWrapper} />
   </Router>
 ), document.getElementById('app'));
 

@@ -12,6 +12,11 @@ module.exports = {
       {
         loader: 'babel-loader',
         test: /\.jsx?$/
+      },
+      {
+        //loaders for webpack to transpile css/styles
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   }
