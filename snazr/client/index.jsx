@@ -8,6 +8,8 @@ class App extends React.Component {
     super(props);
     this.state = {};
     this.initPusher()
+    
+    this.socket = io();
   }
 
   initPusher(){
@@ -22,6 +24,8 @@ class App extends React.Component {
       console.log(data.message);
       console.log('my loc is: ', data.location)
     });
+
+
   }
 
   render () {

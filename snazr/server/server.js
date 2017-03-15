@@ -11,6 +11,8 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const Pusher = require('pusher')
 const { pusher } = require('./pusher_secrets.js')
 
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 
 
@@ -63,6 +65,15 @@ app.post('/api/toggled_users', function(req, res){
   res.send('GET RID OF THIS LINE')
 })
 
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+      
+
+
 app.get('/joined', function(req, res){
   pusher.trigger('my-channel', 'my-event', {
     message: "hello world",
@@ -80,7 +91,8 @@ app.get('/joined', function(req, res){
 
 
 
-app.listen(port, () => {
+
+server.listen(port, () => {
   console.log(`Server is listening on ${port}`);
 });
 

@@ -27134,6 +27134,8 @@ var App = function (_React$Component) {
 
     _this.state = {};
     _this.initPusher();
+
+    _this.socket = io();
     return _this;
   }
 
