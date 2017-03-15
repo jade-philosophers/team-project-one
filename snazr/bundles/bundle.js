@@ -27136,10 +27136,16 @@ var App = function (_React$Component) {
     _this.initPusher();
 
     _this.socket = io();
+    _this.clicker = _this.clicker.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
+    key: 'clicker',
+    value: function clicker() {
+      this.socket.emit('chat message', 'elllo world');
+    }
+  }, {
     key: 'initPusher',
     value: function initPusher() {
       Pusher.logToConsole = true;
@@ -27159,7 +27165,7 @@ var App = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { onClick: this.clicker },
         'Hello world what up lol '
       );
     }

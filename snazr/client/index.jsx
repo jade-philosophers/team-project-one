@@ -10,6 +10,11 @@ class App extends React.Component {
     this.initPusher()
     
     this.socket = io();
+    this.clicker = this.clicker.bind(this);
+  }
+
+  clicker(){
+    this.socket.emit('chat message', 'elllo world')
   }
 
   initPusher(){
@@ -30,7 +35,7 @@ class App extends React.Component {
 
   render () {
     return (
-      <div>Hello world what up lol </div>
+      <div onClick={this.clicker}>Hello world what up lol </div>
     );
   }
 };
