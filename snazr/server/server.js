@@ -60,9 +60,8 @@ app.post('/api/toggled_users', function(req, res){
   //when a user clicks toggle button on the front end view
   //send their userid to us, so we can add him to the cache of toggled users
   let user = req.body
-  client.util.addNew(user);
-
-  res.send('GET RID OF THIS LINE')
+  client.util.add(user, client);
+  res.send('sent /api/toggled_users and adding')
 })
 
 io.on('connection', function(socket){
@@ -70,6 +69,12 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     console.log('message: ' + msg);
   });
+
+  socket.on('request connection', data => {
+    let { userId, requestId } = data
+    socket.emit('set private channel', 'dick')
+    console.log(userId, requestId)
+  })
 
   socket.on('disconnect', function(){
     console.log('user disconnected');

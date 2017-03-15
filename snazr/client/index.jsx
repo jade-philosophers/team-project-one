@@ -10,11 +10,32 @@ class App extends React.Component {
     this.initPusher()
     
     this.socket = io();
-    this.clicker = this.clicker.bind(this);
+    this.listeners()
+    this.clicker1 = this.clicker1.bind(this);
+    this.clicker2 = this.clicker2.bind(this);
+    this.clicker3 = this.clicker3.bind(this);
   }
 
-  clicker(){
+  listeners(){
+    this.socket.on('set private channel', data => {
+      console.log('were building private channel: ', data)
+    })
+  }
+
+  clicker1(){
     this.socket.emit('chat message', 'elllo world')
+  }
+
+  clicker2(){
+    let data = {
+      userId: 12345,
+      requestId: 23465
+    }
+    this.socket.emit('request connection', data)
+  }
+
+  clicker3(){
+    this.socket.emit('chat message', '3elllo world')
   }
 
   initPusher(){
@@ -35,7 +56,11 @@ class App extends React.Component {
 
   render () {
     return (
-      <div onClick={this.clicker}>Hello world what up lol </div>
+      <div>
+          <div onClick={this.clicker1}>Turn me on </div>
+          <div onClick={this.clicker2}>match him</div>
+          <div onClick={this.clicker3}>okay I'll match</div>
+      </div>
     );
   }
 };

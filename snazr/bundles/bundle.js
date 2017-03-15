@@ -27136,14 +27136,38 @@ var App = function (_React$Component) {
     _this.initPusher();
 
     _this.socket = io();
-    _this.clicker = _this.clicker.bind(_this);
+    _this.listeners();
+    _this.clicker1 = _this.clicker1.bind(_this);
+    _this.clicker2 = _this.clicker2.bind(_this);
+    _this.clicker3 = _this.clicker3.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: 'clicker',
-    value: function clicker() {
+    key: 'listeners',
+    value: function listeners() {
+      this.socket.on('set private channel', function (data) {
+        console.log('were building private channel: ', data);
+      });
+    }
+  }, {
+    key: 'clicker1',
+    value: function clicker1() {
       this.socket.emit('chat message', 'elllo world');
+    }
+  }, {
+    key: 'clicker2',
+    value: function clicker2() {
+      var data = {
+        userId: 12345,
+        requestId: 23465
+      };
+      this.socket.emit('request connection', data);
+    }
+  }, {
+    key: 'clicker3',
+    value: function clicker3() {
+      this.socket.emit('chat message', '3elllo world');
     }
   }, {
     key: 'initPusher',
@@ -27165,8 +27189,22 @@ var App = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { onClick: this.clicker },
-        'Hello world what up lol '
+        null,
+        _react2.default.createElement(
+          'div',
+          { onClick: this.clicker1 },
+          'Turn me on '
+        ),
+        _react2.default.createElement(
+          'div',
+          { onClick: this.clicker2 },
+          'match him'
+        ),
+        _react2.default.createElement(
+          'div',
+          { onClick: this.clicker3 },
+          'okay I\'ll match'
+        )
       );
     }
   }]);

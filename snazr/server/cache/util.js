@@ -10,8 +10,8 @@ const getAll = (data) => {
     
 }
 
-const addNew = (data) => new Promise( (resolve, reject) =>{
-    // expect data to be { lng:123.22, lat:56.33, id } with 2 digit precision
+const addNew = (data, client) => new Promise( (resolve, reject) =>{
+    // expect data to be { lng:123.22, lat:56.33, id:12345 } with 2 digit precision
     // client.hkeys(data.lng, function(err, lats){
     //     console.log('all lats are: ', lats)
     //     if(lats){
@@ -20,20 +20,33 @@ const addNew = (data) => new Promise( (resolve, reject) =>{
     //         lats[data.lat] = [...lats[data.lat], data]
     //     }
     // })
-    client.hmget(data.lng, data.lat, function(err, peopleList){
+
+
+
+    client.HGET(data.lng, data.lat, function(err, peopleList){
         if(peopleList){
+            console.log('what is peopleslist: ', typeof peopleList)
             let jsonObj = JSON.parse(peopleList)
             let combinedEntry = [data, ...jsonObj]
             let stringed = JSON.stringify(combinedEntry)
-            client.hmset(data.lng, data.lat, stringed, function(err, res){
-                if(err) console.log('addNewFunction Error: ', err)
-                console.log('addNewFunction result', res)
+            console.log(stringed)
+            client.HSET([data.lng+'', data.lat+'', stringed], function(err, res){
+                if(err) { 
+                    console.log('add New User Error1: ', err)
+                    reject(err)
+                }
+                console.log('add new User result1', res)
+                resolve('add new user in cache success')
             })
         } else {
-            let entry = [JSON.stringify(data)]
-            client.hmset(data.lng, data.lat, entry, function(err, res){
-                if(err) console.log('addNewFunction Error: ', err)
-                console.log('addNewFunction result', res)
+            let entry = JSON.stringify([data])
+            client.HSET([data.lng+'', data.lat+'', entry], function(err, res){
+                if(err) { 
+                    console.log('add New User Error2: ', err)
+                    reject(err)
+                }
+                console.log('add New User result2', res)
+                resolve('add new user in cache success')
             })
         }
     })
