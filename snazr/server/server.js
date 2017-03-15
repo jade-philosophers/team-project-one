@@ -52,17 +52,22 @@ app.get('/api/toggled_users', function(req, res){
   // if there are no locations just give a generic guy called joe back
   // 
   
-  let data = req.query //should hold the data
+  let data = req.query 
   console.log('weve made a request', data)
   client.util.get(data, client , 0.02)  //specify range here, 0.02 means within 2kilometer
-  // .then(result => res.send(result))
-  // res.send('GET RID OF THIS LINE')
+  .then(result => res.send(result))
 })
 
 app.post('/api/toggled_users', function(req, res){
   let user = req.body
   client.util.add(user, client);
   res.send('sent /api/toggled_users and adding')
+})
+
+app.post('/api/toggle_off', function(req, res){
+  let user = req.body
+  client.util.del(user, client);
+  res.send('deleting user from discovered list')
 })
 
 io.on('connection', function(socket){

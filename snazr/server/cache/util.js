@@ -1,35 +1,60 @@
-var Promise = require('bluebird')
-
-const generateRange = (data, range) => {
-    console.log('weve got data and range? ', data, range)
-    let {lng, lat} = data
-    let lngR = [], latR = []
-    console.log('before for loop: ', lng, lat)
-    for( let i = -range; i< range; i+=0.01){
-        lngR.push(data.lng + i)
-        latR.push(data.lat + i)
-    }
-    console.log('we returning', [lngR, latR] )
-    return [lngR, latR]
-
-}
+const Promise = require('bluebird')
+const _ = require('lodash')
 
 
 const getAll = (data, client, range) => new Promise( (resolve, reject) => {
     const [lngR, latR] = generateRange(data, range)
     console.log('lat range; ', latR)
     console.log('long range: ', lngR)
-    // const xRange = [ data.lng + 0.02, data.lng + 0.01, data.lng - 0.01, 
-    // data.lng -0.02]
-    // const yRange = [ data.lat + 0.01, data.lat + 0.02, data.lat - 0.01, 
-    // data.lat - 0.02]
-    // create 4 promises that gets each lat long combo
-    // then promise.all the result1
-    //resolve the result
-    resolve([1,2,3,4])
-    return 3
+    // lat range;  [ '56.31', '56.32', '56.33', '56.34', '56.35' ]
+    // long range:  [ '123.20', '123.21', '123.22', '123.23', '123.24' ]
+
+    let promises = lngR.map( i => new Promise((resolve, reject) => {
+        client.hmget([i, ...latR], function(err, res){
+            if(err) reject(err)
+            if(res === null){
+                console.log('no entry so returning null')
+                resolve([])
+            }
+            console.log('res from getAll cache query is: ', res)
+            resolve(res)
+        })
+    }))
+    Promise.all(promises)
+    .then( results =>{ console.log('FINAL FINAL: ', results)
+      let final = results.reduce((acc, i) => [...acc, ...i])
+        .filter(i=> i !== null)
+        .map(i=> {
+            if(typeof i === 'string'){ 
+                return JSON.parse(i)
+            }
+            else return i
+        });
+      let unpacked = _.flatten(final)
+      resolve(unpacked)
+    })
+    .catch( err => console.log(err))
+
+
     
 })
+
+const generateRange = (data, range) => {
+    console.log('weve got data and range? ', data, range)
+    let {lng, lat} = data
+    let lngR = [], latR = []
+    console.log('before for loop: ', lng, lat)
+    for( let i = -range; i<= range; i+=0.01){
+        let r1 = parseFloat(data.lng) + i
+        let r2 = parseFloat(data.lat) + i
+        let f = r1.toFixed(2)
+        let f2 = r2.toFixed(2)
+        lngR.push(f)
+        latR.push(f2)
+    }
+    return [lngR, latR]
+
+}
 
 const addNew = (data, client) => new Promise( (resolve, reject) =>{
     // expect data to be { lng:123.22, lat:56.33, id:12345 } with 2 digit precision
@@ -44,14 +69,14 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
 
 
 
-    client.HGET(data.lng, data.lat, function(err, peopleList){
+    client.hget(data.lng, data.lat, function(err, peopleList){
         if(peopleList){
             console.log('what is peopleslist: ', typeof peopleList)
             let jsonObj = JSON.parse(peopleList)
             let combinedEntry = [data, ...jsonObj]
             let stringed = JSON.stringify(combinedEntry)
-            console.log(stringed)
-            client.HSET([data.lng+'', data.lat+'', stringed], function(err, res){
+            console.log('entry to cache is1: ' , stringed)
+            client.hset([data.lng+'', data.lat+'', stringed], function(err, res){
                 if(err) { 
                     console.log('add New User Error1: ', err)
                     reject(err)
@@ -61,7 +86,8 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
             })
         } else {
             let entry = JSON.stringify([data])
-            client.HSET([data.lng+'', data.lat+'', entry], function(err, res){
+            console.log('entry to cache is2: ', entry)
+            client.hset([data.lng+'', data.lat+'', entry], function(err, res){
                 if(err) { 
                     console.log('add New User Error2: ', err)
                     reject(err)
@@ -73,9 +99,15 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
     })
 })
 
+
+const remove = (data, client) => new Promise((resolve, reject) => {
+    // client.
+})
+
 const util = {
     get : getAll,
-    add : addNew
+    add : addNew,
+    del : remove
 }
 
 module.exports.util = util
