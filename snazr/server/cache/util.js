@@ -1,14 +1,35 @@
-var promise = require('bluebird')
+var Promise = require('bluebird')
 
+const generateRange = (data, range) => {
+    console.log('weve got data and range? ', data, range)
+    let {lng, lat} = data
+    let lngR = [], latR = []
+    console.log('before for loop: ', lng, lat)
+    for( let i = -range; i< range; i+=0.01){
+        lngR.push(data.lng + i)
+        latR.push(data.lat + i)
+    }
+    console.log('we returning', [lngR, latR] )
+    return [lngR, latR]
 
-const getAll = (data) => {
-    // console.log('hello')
-    // const xRange = [ data.longitude + 0.02, data.longitude + 0.01, data.longitude - 0.01, 
-    // data.longitude -0.02]
-    // const yRange = [ data.latitude + 0.01, data.latitude + 0.02, data.latitude - 0.01, 
-    // data.latitude - 0.02]
-    
 }
+
+
+const getAll = (data, client, range) => new Promise( (resolve, reject) => {
+    const [lngR, latR] = generateRange(data, range)
+    console.log('lat range; ', latR)
+    console.log('long range: ', lngR)
+    // const xRange = [ data.lng + 0.02, data.lng + 0.01, data.lng - 0.01, 
+    // data.lng -0.02]
+    // const yRange = [ data.lat + 0.01, data.lat + 0.02, data.lat - 0.01, 
+    // data.lat - 0.02]
+    // create 4 promises that gets each lat long combo
+    // then promise.all the result1
+    //resolve the result
+    resolve([1,2,3,4])
+    return 3
+    
+})
 
 const addNew = (data, client) => new Promise( (resolve, reject) =>{
     // expect data to be { lng:123.22, lat:56.33, id:12345 } with 2 digit precision

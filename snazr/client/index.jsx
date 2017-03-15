@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import People from './components/People.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class App extends React.Component {
     this.clicker1 = this.clicker1.bind(this);
     this.clicker2 = this.clicker2.bind(this);
     this.clicker3 = this.clicker3.bind(this);
+    this.clicker4 = this.clicker4.bind(this);
   }
 
   listeners(){
@@ -38,6 +40,19 @@ class App extends React.Component {
     this.socket.emit('chat message', '3elllo world')
   }
 
+  clicker4(){
+    // Axios.get('/api/toggled_users', {
+    //   params: { "lng":123.22, "lat":56.33, "id":12345 }
+    // })
+    axios.get('/api/toggled_users', {
+    params: { 
+      "lng":123.22, 
+      "lat":56.33, 
+      "id":12345 }
+   })
+    .then( msg => console.log('success: ', msg))
+  }
+
   initPusher(){
     Pusher.logToConsole = true;
 
@@ -60,6 +75,7 @@ class App extends React.Component {
           <div onClick={this.clicker1}>Turn me on </div>
           <div onClick={this.clicker2}>match him</div>
           <div onClick={this.clicker3}>okay I'll match</div>
+          <div onClick={this.clicker4}>send Get request</div>
       </div>
     );
   }

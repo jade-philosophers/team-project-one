@@ -51,14 +51,15 @@ app.get('/api/toggled_users', function(req, res){
   // the information of location is sent through their locations
   // if there are no locations just give a generic guy called joe back
   // 
-  let loc = req.body //should hold the data
-
-  res.send('GET RID OF THIS LINE')
+  
+  let data = req.query //should hold the data
+  console.log('weve made a request', data)
+  client.util.get(data, client , 0.02)  //specify range here, 0.02 means within 2kilometer
+  // .then(result => res.send(result))
+  // res.send('GET RID OF THIS LINE')
 })
 
 app.post('/api/toggled_users', function(req, res){
-  //when a user clicks toggle button on the front end view
-  //send their userid to us, so we can add him to the cache of toggled users
   let user = req.body
   client.util.add(user, client);
   res.send('sent /api/toggled_users and adding')
