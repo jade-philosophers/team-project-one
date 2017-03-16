@@ -71,8 +71,15 @@ app.post('/api/toggle_off', function(req, res){
 })
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  socket.on('auth', function(userId){
+    let id = userId
+    //check if we got stuff for this client
+    //then emit them
+    //store the stuff in our cache
+  })
+  console.log('a user connected', socket.id);
   socket.on('chat message', function(msg){
+
     console.log('message: ' + msg);
   });
 
@@ -83,7 +90,7 @@ io.on('connection', function(socket){
   })
 
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    console.log('user disconnected', socket.id);
   });
 });
       

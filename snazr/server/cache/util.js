@@ -3,6 +3,8 @@ const _ = require('lodash')
 
 
 const getAll = (data, client, range) => new Promise( (resolve, reject) => {
+
+    //should make no assumptions about data from front end
     const [lngR, latR] = generateRange(data, range)
     console.log('lat range; ', latR)
     console.log('long range: ', lngR)
@@ -67,7 +69,8 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
     //     }
     // })
 
-
+    // should make no assumptions about data on the server end,
+    // need to format the data if there isn't data throw some kind of error and log it
 
     client.hget(data.lng, data.lat, function(err, peopleList){
         if(peopleList){
@@ -102,6 +105,25 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
 
 const remove = (data, client) => new Promise((resolve, reject) => {
     // client.
+    // expects data to be location and userid
+    client.hget(data.lng, data.lat, function(err, peopleList){
+        if(peopleList){
+            let parsed = JSON.parse(peopleList)
+            let filtered = parsed.filter( i=> i.userId !== data.userId)
+            let stringed = JSON.stringify(filtered)
+            client.hset([data.lng+'', data.lat+'', stringed], function(er, res){
+                if(err){
+                    console.log('couldnt remove user: ', data.userId)
+                    reject(err)
+                }
+                console.log('removed user from discovery')
+                resolve('successfuly removed user from active discovery list')
+            })
+            //go through the list to find the userid, and splice it
+        } else {
+            //you're good
+        }
+    })
 })
 
 const util = {

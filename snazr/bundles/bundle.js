@@ -27140,6 +27140,9 @@ var App = function (_React$Component) {
     _this.initPusher();
 
     _this.socket = io();
+    var userId = 696969;
+
+    _this.socket.emit('auth', userId);
     _this.listeners();
     _this.clicker1 = _this.clicker1.bind(_this);
     _this.clicker2 = _this.clicker2.bind(_this);

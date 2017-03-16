@@ -11,6 +11,9 @@ class App extends React.Component {
     this.initPusher()
     
     this.socket = io();
+    let userId = 696969
+
+    this.socket.emit('auth', userId)
     this.listeners()
     this.clicker1 = this.clicker1.bind(this);
     this.clicker2 = this.clicker2.bind(this);
