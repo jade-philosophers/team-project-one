@@ -16,7 +16,6 @@ const io = require('socket.io')(server);
 
 
 
-
 const port = process.env.PORT || 8000;
 // mongoose.connect('mongodb://localhost/snazr');
 
@@ -73,6 +72,7 @@ app.post('/api/toggle_off', function(req, res){
 io.on('connection', function(socket){
   socket.on('auth', function(userId){
     let id = userId
+    console.log('id : ', id)
     //check if we got stuff for this client
     //then emit them
     //store the stuff in our cache
@@ -85,8 +85,10 @@ io.on('connection', function(socket){
 
   socket.on('request connection', data => {
     let { userId, requestId } = data
-    socket.emit('set private channel', 'dick')
-    console.log(userId, requestId)
+    let event = 'listen for:' + requestId
+    let msg = `${userId} requests ${requestId}`
+    socket.broadcast.emit('hello', msg)
+    console.log(event, msg)
   })
 
   socket.on('disconnect', function(){

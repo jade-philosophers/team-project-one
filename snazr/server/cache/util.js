@@ -107,7 +107,6 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
 
 
 const remove = (data, client) => new Promise((resolve, reject) => {
-    // client.
     // expects data to be location and userid
     client.hget(data.lng, data.lat, function(err, peopleList){
         if(peopleList){

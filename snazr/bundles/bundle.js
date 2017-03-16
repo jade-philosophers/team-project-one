@@ -27140,7 +27140,9 @@ var App = function (_React$Component) {
     _this.initPusher();
 
     _this.socket = io();
-    var userId = 696969;
+    // let userId = Math.floor(Math.random()*100000)
+    var userId = 12345;
+    console.log('generated ID: ', userId);
 
     _this.socket.emit('auth', userId);
     _this.listeners();
@@ -27157,6 +27159,14 @@ var App = function (_React$Component) {
       this.socket.on('set private channel', function (data) {
         console.log('were building private channel: ', data);
       });
+      var event = 'listen for:' + this.userId + '';
+      this.socket.on(event, function (data) {
+        console.log('event is: ', event);
+        console.log('receiving for id: ', data);
+      });
+      this.socket.on('hello', function (data) {
+        console.log('hello event data: ', data);
+      });
     }
   }, {
     key: 'clicker1',
@@ -27168,14 +27178,14 @@ var App = function (_React$Component) {
     value: function clicker2() {
       var data = {
         userId: 12345,
-        requestId: 23465
+        requestId: 23456
       };
       this.socket.emit('request connection', data);
     }
   }, {
     key: 'clicker3',
     value: function clicker3() {
-      this.socket.emit('chat message', '3elllo world');
+      this.socket.emit('confirmed', { userId: this.userId });
     }
   }, {
     key: 'clicker4',
@@ -27221,12 +27231,12 @@ var App = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { onClick: this.clicker2 },
-          'match him'
+          'Photographer: I want to photograph JOE'
         ),
         _react2.default.createElement(
           'div',
           { onClick: this.clicker3 },
-          'okay I\'ll match'
+          'JOE: okay I confirm '
         ),
         _react2.default.createElement(
           'div',

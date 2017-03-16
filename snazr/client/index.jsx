@@ -11,7 +11,9 @@ class App extends React.Component {
     this.initPusher()
     
     this.socket = io();
-    let userId = 696969
+    // let userId = Math.floor(Math.random()*100000)
+    let userId = 12345
+    console.log('generated ID: ', userId)
 
     this.socket.emit('auth', userId)
     this.listeners()
@@ -25,6 +27,14 @@ class App extends React.Component {
     this.socket.on('set private channel', data => {
       console.log('were building private channel: ', data)
     })
+    let event = 'listen for:' + this.userId + ''
+    this.socket.on(event, data => {
+      console.log('event is: ', event)
+      console.log('receiving for id: ', data)
+    })
+    this.socket.on('hello', data => {
+      console.log('hello event data: ', data)
+    })
   }
 
   clicker1(){
@@ -34,13 +44,13 @@ class App extends React.Component {
   clicker2(){
     let data = {
       userId: 12345,
-      requestId: 23465
+      requestId: 23456
     }
     this.socket.emit('request connection', data)
   }
 
   clicker3(){
-    this.socket.emit('chat message', '3elllo world')
+    this.socket.emit('confirmed', { userId: this.userId })
   }
 
   clicker4(){
@@ -76,8 +86,8 @@ class App extends React.Component {
     return (
       <div>
           <div onClick={this.clicker1}>Turn me on </div>
-          <div onClick={this.clicker2}>match him</div>
-          <div onClick={this.clicker3}>okay I'll match</div>
+          <div onClick={this.clicker2}>Photographer: I want to photograph JOE</div>
+          <div onClick={this.clicker3}>JOE: okay I confirm </div>
           <div onClick={this.clicker4}>send Get request</div>
       </div>
     );
