@@ -35,7 +35,10 @@ const getAll = (data, client, range) => new Promise( (resolve, reject) => {
       let unpacked = _.flatten(final)
       resolve(unpacked)
     })
-    .catch( err => console.log(err))
+    .catch( err => {
+        console.log(err)
+        reject(err)
+    })
 
 
     
@@ -122,6 +125,8 @@ const remove = (data, client) => new Promise((resolve, reject) => {
             //go through the list to find the userid, and splice it
         } else {
             //you're good
+            reject('the location data was wrong')
+            console.log('could not find anyone in the location grid given these lng:lat', data.lng, data.lat)
         }
     })
 })
