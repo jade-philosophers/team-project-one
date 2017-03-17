@@ -28607,6 +28607,9 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'listeners',
     value: function listeners() {
+      //pulll master branch
+      //download expo
+
       this.socket.on('set private channel', function (data) {
         console.log('were building private channel: ', data);
       });
@@ -28615,9 +28618,9 @@ var App = function (_React$Component) {
         console.log('request connection from ', data.requestId);
         console.log('request connection to : ', data.userId);
       });
-      this.socket.on('hello', function (data) {
-        console.log('hello event data: ', data);
-      });
+      // this.socket.on('hello', data => {
+      //   console.log('hello event data: ', data)
+      // })
     }
   }, {
     key: 'clicker1',

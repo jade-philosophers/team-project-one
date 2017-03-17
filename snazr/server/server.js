@@ -90,19 +90,26 @@ io.on('connection', function(socket){
     let msg = `${userId} requests ${requestId}`
     // let msg = encrypt(msg)
 
-    socket.broadcast.emit('requestConn', msg)
+    socket.broadcast.emit('request connection', msg)
     console.log(event, msg)
   })
 
-  socket.on('send photos', data => {
-    
-  })
 
   socket.on('disconnect', function(){
     console.log('user disconnected', socket.id);
   });
 });
       
+app.post('/photos', function(req, res){
+  let data = req.body
+  // takes the data, which should be userId to send to, and the picture urls
+  // stores these into either database or cache
+  // when user hits refresh on gallery page, it'll hit the get endpoint 
+})
+
+app.get('/photos', function(req, res){
+  //use params to get data forhimself
+})
 
 
 app.get('/joined', function(req, res){

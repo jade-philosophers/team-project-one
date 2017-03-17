@@ -24,6 +24,9 @@ class App extends React.Component {
   }
 
   listeners(){
+    //pulll master branch
+    //download expo
+
     this.socket.on('set private channel', data => {
       console.log('were building private channel: ', data)
     })
@@ -32,9 +35,9 @@ class App extends React.Component {
       console.log('request connection from ', data.requestId)
       console.log('request connection to : ', data.userId)
     })
-    this.socket.on('hello', data => {
-      console.log('hello event data: ', data)
-    })
+    // this.socket.on('hello', data => {
+    //   console.log('hello event data: ', data)
+    // })
   }
 
   clicker1(){
