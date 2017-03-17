@@ -70,6 +70,7 @@ app.post('/api/toggle_off', function(req, res){
 })
 
 io.on('connection', function(socket){
+
   socket.on('auth', function(userId){
     let id = userId
     console.log('id : ', id)
@@ -87,8 +88,14 @@ io.on('connection', function(socket){
     let { userId, requestId } = data
     let event = 'listen for:' + requestId
     let msg = `${userId} requests ${requestId}`
-    socket.broadcast.emit('hello', msg)
+    // let msg = encrypt(msg)
+
+    socket.broadcast.emit('requestConn', msg)
     console.log(event, msg)
+  })
+
+  socket.on('send photos', data => {
+    
   })
 
   socket.on('disconnect', function(){

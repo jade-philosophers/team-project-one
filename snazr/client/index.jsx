@@ -27,10 +27,10 @@ class App extends React.Component {
     this.socket.on('set private channel', data => {
       console.log('were building private channel: ', data)
     })
-    let event = 'listen for:' + this.userId + ''
-    this.socket.on(event, data => {
-      console.log('event is: ', event)
-      console.log('receiving for id: ', data)
+    let message = 'listen for:' + this.userId + ''
+    this.socket.on('request connection ', data => {
+      console.log('request connection from ', data.requestId)
+      console.log('request connection to : ', data.userId)
     })
     this.socket.on('hello', data => {
       console.log('hello event data: ', data)
