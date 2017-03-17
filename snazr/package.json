@@ -1,44 +1,19 @@
 {
-  "name": "simple-react-practice",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon server/server.js",
-    "build": "webpack",
-    "build/watch": "webpack --watch",
-    "test": "mocha",
-    "twatch": "mocha --watch"
-  },
-  "author": "",
-  "license": "ISC",
+  "name": "snazr",
+  "version": "0.0.0",
+  "description": "Hello Expo!",
+  "author": "Felix Tran, Patrick Xie, Eric Chen, Veer Ganghwal",
+  "private": true,
+  "main": "./components/main.js",
   "dependencies": {
+    "@expo/ex-navigation": "^2.9.2",
+    "@expo/vector-icons": "~4.0.0",
     "axios": "^0.15.3",
-    "bluebird": "^3.5.0",
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
-    "google-map-react": "^0.23.0",
-    "mongoose": "^4.8.6",
-    "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-route": "^1.0.3",
-    "react-router": "^3.0.2",
-    "redis": "^2.6.5"
-  },
-  "devDependencies": {
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.4.0",
-    "babel-preset-latest": "^6.22.0",
-    "babel-preset-react": "^6.23.0",
-    "chai": "^3.5.0",
-    "css-loader": "^0.27.3",
-    "mocha": "^3.2.0",
-    "nodemon": "^1.11.0",
-    "redis-mock": "^0.16.0",
-    "style-loader": "^0.13.2",
-    "supertest": "^3.0.0",
-    "webpack": "^2.2.1"
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "expo": "^14.0.2",
+    "native-base": "^2.0.12",
+    "react": "~15.4.0",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
+    "react-native-permissions": "^0.2.7"
   }
 }
