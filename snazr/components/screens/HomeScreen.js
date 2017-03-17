@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Switch, AsyncStorage } from 'react-native';
+import { View, Switch, AsyncStorage, Image } from 'react-native';
 import Router from '../navigation/Router';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text} from 'native-base';
 import Expo from 'expo';
