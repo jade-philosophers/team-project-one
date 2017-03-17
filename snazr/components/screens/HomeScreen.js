@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Switch, AsyncStorage } from 'react-native';
 import Router from '../navigation/Router';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text} from 'native-base';
+import Expo from 'expo';
 import axios from 'axios';
 import helpers from '../config/util';
 
@@ -17,6 +18,7 @@ class HomeScreen extends Component {
     this._getAndSendLocationData = this._getAndSendLocationData.bind(this);
     this._searchAndRemoveLocationData = this._searchAndRemoveLocationData.bind(this);
     this._logOut = this._logOut.bind(this);
+    this._takeImage = this._takeImage.bind(this);
   }
 
   static route = {
@@ -64,6 +66,14 @@ class HomeScreen extends Component {
     this.props.navigator.push(Router.getRoute('map'));
   }
 
+  _takeImage = async () => {
+    let result = await Expo.ImagePicker.launchCameraAsync();
+    console.log(result);
+    if (!result.cancelled) {
+      this.setState({image: result.uri});
+    }
+  }
+
   async _logOut() {
     await AsyncStorage.clear(() => {
       this.props.navigator.push(Router.getRoute('login'));
@@ -105,7 +115,7 @@ class HomeScreen extends Component {
                       <Button onPress={this._goToMap}>
                         <Icon name="map" />
                       </Button>
-                      <Button>
+                      <Button onPress={this._takeImage}>
                         <Icon name="camera" />
                       </Button>
                       <Button onPress={this._logOut}>
