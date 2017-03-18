@@ -16,5 +16,4 @@
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-permissions": "^0.2.7"
-  }
 }

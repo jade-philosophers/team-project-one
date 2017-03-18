@@ -1,0 +1,13 @@
+{
+  "name": "snazr",
+  "description": "watch you live your life in the lens of others",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patrickxie/team-project-one.git"
+  }
+}
