@@ -1,13 +1,13 @@
 {
-  "name": "SnazR",
-  "description": "Photos when you want them",
+  "name": "snazr",
+  "description": "An empty new project",
   "slug": "snazr",
   "privacy": "public",
   "sdkVersion": "14.0.0",
   "version": "1.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "icon": "./assets/icons/app.png",
+  "icon": "./assets/icons/loading.png",
   "loading": {
     "icon": "./assets/icons/loading.png",
     "hideExponentText": false

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Expo from 'expo';
-import { Text, View, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, AsyncStorage, Image } from 'react-native';
 import { Icon } from 'native-base';
 import helpers from '../config/util';
 import Router from '../navigation/Router';
@@ -42,12 +42,10 @@ class LoginScreen extends Component {
     return(
       <View style={styles.container}>
         <View>
-          <Text style={styles.header} >SnazR</Text>
-          <Icon name="camera" style={{fontSize: 50, alignItems: 'center'}} />
+          <Image style={{backgroundColor: '#eeee', height: 100, width: 300, marginTop: 50 }}source={require('../../assets/icons/app.png')} />
         </View>
         <View style={styles.facebook}>
-          <Icon onPress={this.logIn} name="logo-facebook" style={{fontSize: 50, color: '#155094'}} />
-          <Text style={{fontWeight: 'bold'}}>Login!</Text>
+          <Icon onPress={this.logIn} name="logo-facebook" style={{fontSize: 75, color: '#155094'}} />
         </View> 
     </View>
 
@@ -64,7 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   facebook: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 50
   },
   header: {
     fontSize: 50,

@@ -27,6 +27,7 @@ class MapScreen extends Component {
     });
   }
 
+
   render() {
     return (
       <Map latitude={this.state.latitude} longitude={this.state.longitude} />

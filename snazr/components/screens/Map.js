@@ -1,20 +1,43 @@
 import React, { Component } from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { AsyncStorage, Image, View, StyleSheet } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import Expo from 'expo';
+import { AsyncStorage, Image, View, Text, StyleSheet } from 'react-native';
 
 class Map extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      id: ''
+      id: '',
+      name: '',
+      tarLng: 0,
+      tarLat: 0,
+      nearbyPeople: []
     }
-    this._setId();
+    this._setIdAndName();
+    this._takeImage = this._takeImage.bind(this);
+    this._setTargetCoords = this._setTargetCoords.bind(this);
   }
 
-  async _setId() {
+  async _setIdAndName() {
     const id = await AsyncStorage.getItem('com.snazr.id');
-    this.setState({id: id});
+    const name = await AsyncStorage.getItem('com.snazr.name');
+    this.setState({id: id, name: name});
+  }
+
+  _setTargetCoords(e) {
+    const { longitude, latitude } = e.nativeEvent.coordinate;
+    this.setState({tarLng: longitude, tarLat: latitude});
+  }
+
+  async _takeImage(e) {
+    let result = await Expo.ImagePicker.launchCameraAsync();
+    console.log(result);
+    if (!result.cancelled) {
+      this.setState({image: result.uri});
+    }
+    //loop through all nearby people and find the one with lat/lng that match the target lat/lng
+    //upload to aws attaching image to id --> key = id, value = array of images
   }
 
   render() {
@@ -25,8 +48,13 @@ class Map extends Component {
           latitudeDelta: 0.0025,
           longitudeDelta: 0.0025,
         }}>
-        <Marker coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} title={"hi"} description={"test"}>
+        <Marker coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} title={this.state.name} /*description={"test"}*/ onPress={this._setTargetCoords}  onCalloutPress={this._takeImage} >
           <Image source={{uri: `http://graph.facebook.com/${this.state.id}/picture?type=small`}} style={styles.markers} />
+            <Callout>
+                <View>
+                  <Text >{this.state.name}</Text>
+                </View>
+            </Callout>
         </Marker>
       </MapView>
     );
