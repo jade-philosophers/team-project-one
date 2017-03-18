@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD:snazr-server/package.json
   "name": "simple-react-practice",
   "version": "1.0.0",
   "description": "",
@@ -41,5 +42,24 @@
     "redis-mock": "^0.16.0",
     "supertest": "^3.0.0",
     "webpack": "^2.2.1"
+=======
+  "name": "snazr",
+  "version": "0.0.0",
+  "description": "Hello Expo!",
+  "author": "Felix Tran, Patrick Xie, Eric Chen, Veer Ganghwal",
+  "private": true,
+  "main": "./components/main.js",
+  "dependencies": {
+    "@expo/ex-navigation": "^2.9.2",
+    "@expo/vector-icons": "~4.0.0",
+    "axios": "^0.15.3",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "expo": "^14.0.2",
+    "native-base": "^2.0.12",
+    "react": "~15.4.0",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
+    "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
+    "react-native-permissions": "^0.2.7"
+>>>>>>> master:snazr/package.json
   }
 }
