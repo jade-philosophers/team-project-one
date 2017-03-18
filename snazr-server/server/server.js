@@ -5,9 +5,9 @@ const { client } = require('./cache/redis.js')
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-const FB = require('./config/fb');
-const passport = require('passport');
-const FacebookStrategy = require('passport-facebook').Strategy;
+// const FB = require('./config/fb');
+// const passport = require('passport');
+// const FacebookStrategy = require('passport-facebook').Strategy;
 // const Pusher = require('pusher')
 // const { pusher } = require('./pusher_secrets.js')
 
