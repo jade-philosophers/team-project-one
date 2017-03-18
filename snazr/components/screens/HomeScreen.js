@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Switch, AsyncStorage, Image } from 'react-native';
 import Router from '../navigation/Router';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text} from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem } from 'native-base';
 import Expo from 'expo';
 import axios from 'axios';
 import helpers from '../config/util';
@@ -18,13 +18,6 @@ class HomeScreen extends Component {
     this._getAndSendLocationData = this._getAndSendLocationData.bind(this);
     this._searchAndRemoveLocationData = this._searchAndRemoveLocationData.bind(this);
     this._logOut = this._logOut.bind(this);
-    this._takeImage = this._takeImage.bind(this);
-  }
-
-  static route = {
-    // navigationBar: {
-    //   title: 'Home',
-    // }
   }
 
   _toggleLocation() {
@@ -66,13 +59,6 @@ class HomeScreen extends Component {
     this.props.navigator.push(Router.getRoute('map'));
   }
 
-  _takeImage = async () => {
-    let result = await Expo.ImagePicker.launchCameraAsync();
-    console.log(result);
-    if (!result.cancelled) {
-      this.setState({image: result.uri});
-    }
-  }
 
   async _logOut() {
     await AsyncStorage.clear(() => {
@@ -98,14 +84,30 @@ class HomeScreen extends Component {
                   </Right>
               </Header>
               <Content>
-                  <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: 25, fontSize: 35}}>Welcome to SnazR!</Text>
-                  <Text style={{textAlign: 'center', fontStyle: 'italic', marginTop: 5}}>Your one place for photo sharing and expression!</Text>
-                  <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 10}}>To get started:</Text>
-                  <Text style={{fontSize: 14, marginTop: 6 }}>1. Select the switch in the top-right corner and notify others that you want your picture taken!</Text>
-                  <Text style={{fontSize: 14, marginTop: 4 }}>2. When you are finished, select the switch again to toggle the feature off.</Text>
-                  <Text style={{fontSize: 14, marginTop: 4 }}>3. To take pictures of others, select the <Icon style={{fontSize: 14}}name="map" /> button below to see nearby users who want their picture taken!</Text>
-                  <Text style={{fontSize: 14, marginTop: 4 }}>4. Once you've found someone, click the <Icon style={{fontSize: 14}}name="camera" /> button below to open the camera and begin shooting!</Text>
-                  <Text style={{fontSize: 14, marginTop: 4 }}>5. If you wish to logout, select the <Icon style={{fontSize: 14}}name="settings" /> button below</Text>
+                  <ListItem>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: 25, fontSize: 35}}>  Welcome to SnazR!</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{textAlign: 'center', fontStyle: 'italic', marginTop: 5, fontSize: 14}}>Your one place for photo sharing and expression!</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 10}}>To get started:</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 14, marginTop: 6 }}>1. Select the switch in the top-right corner and notify others that you want your picture taken!</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 14, marginTop: 4 }}>2. When you are finished, select the switch again to toggle the feature off.</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 14, marginTop: 4 }}>3. To take pictures of others, select the <Icon style={{fontSize: 14}}name="map" /> button below to see nearby users who want their picture taken!</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 14, marginTop: 4 }}>4. Once you've found someone, select their marker and the following callout to open the camera and begin shooting!</Text>
+                  </ListItem>
+                  <ListItem>
+                    <Text style={{fontSize: 14, marginTop: 4 }}>5. If you wish to logout, select the <Icon style={{fontSize: 14}}name="settings" /> button below</Text>
+                  </ListItem>
               </Content>
               <Footer>
                   <FooterTab>
@@ -114,9 +116,6 @@ class HomeScreen extends Component {
                       </Button>
                       <Button onPress={this._goToMap}>
                         <Icon name="map" />
-                      </Button>
-                      <Button onPress={this._takeImage}>
-                        <Icon name="camera" />
                       </Button>
                       <Button onPress={this._logOut}>
                         <Icon name="settings" />
