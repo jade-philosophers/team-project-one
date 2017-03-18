@@ -28,3 +28,8 @@ HMSET "123.22" "56.31" '["joe", "anne"]' "56.32" '["janis"]' "56.34" '[]' "56.35
 
   if(n > 4) console.log(n)
   else console.log(3)
+
+
+
+
+  

@@ -8,8 +8,8 @@ const app = express();
 const FB = require('./config/fb');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
-const Pusher = require('pusher')
-const { pusher } = require('./pusher_secrets.js')
+// const Pusher = require('pusher')
+// const { pusher } = require('./pusher_secrets.js')
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -112,20 +112,20 @@ app.get('/photos', function(req, res){
 })
 
 
-app.get('/joined', function(req, res){
-  pusher.trigger('my-channel', 'my-event', {
-    message: "hello world",
-    location : {
-      longitude: 123.11,
-      latitude: 64.33
-    }
-  });
+// app.get('/joined', function(req, res){
+//   pusher.trigger('my-channel', 'my-event', {
+//     message: "hello world",
+//     location : {
+//       longitude: 123.11,
+//       latitude: 64.33
+//     }
+//   });
 
-  pusher.trigger('4chan', 'my-event', {
-    message: 'YOU"VE SEEN SOMETHING YOU SHOULDN"T HAVE'
-  })
-  res.send('ok')
-})
+//   pusher.trigger('4chan', 'my-event', {
+//     message: 'YOU"VE SEEN SOMETHING YOU SHOULDN"T HAVE'
+//   })
+//   res.send('ok')
+// })
 
 
 
