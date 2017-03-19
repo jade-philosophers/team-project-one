@@ -6,7 +6,7 @@ import helpers from '../config/util';
 import Router from '../navigation/Router';
 
 
-class LoginScreen extends Component {
+export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.logIn = this.logIn.bind(this);
@@ -15,7 +15,6 @@ class LoginScreen extends Component {
   async logIn() {
     const session = await AsyncStorage.getItem('com.snazr.name');
     if (!session) {
-    // if(!helpers.token) {
       const data = await Expo.Facebook.logInWithReadPermissionsAsync( helpers.FB_APP_ID, {
         permissions: ['user_photos', 'public_profile' ]
       });
@@ -30,11 +29,9 @@ class LoginScreen extends Component {
         } catch (error) {
           console.log('Storage error: ' + error.message);
         }
-      } else {
-        this.logIn();
-      }
+      } 
     } else {
-       this.props.navigator.push(Router.getRoute('home'));
+      this.props.navigator.push(Router.getRoute('home'));
     }
   }
 
@@ -42,7 +39,7 @@ class LoginScreen extends Component {
     return(
       <View style={styles.container}>
         <View>
-          <Image style={{backgroundColor: '#eeee', height: 100, width: 300, marginTop: 50 }}source={require('../../assets/icons/app.png')} />
+          <Image style={{backgroundColor: '#eeee', height: 100, width: 300, marginTop: 50 }} source={require('../../assets/icons/app.png')} />
         </View>
         <View style={styles.facebook}>
           <Icon onPress={this.logIn} name="logo-facebook" style={{fontSize: 75, color: '#155094'}} />
@@ -70,5 +67,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
-
-export default LoginScreen;

@@ -1,7 +1,7 @@
 {
   "name": "snazr",
-  "version": "0.0.0",
-  "description": "Hello Expo!",
+  "version": "1.0.0",
+  "description": "Watch you live your life through the lens of others.",
   "author": "Felix Tran, Patrick Xie, Eric Chen, Veer Ganghwal",
   "private": true,
   "main": "./components/main.js",
@@ -14,7 +14,8 @@
     "native-base": "^2.0.12",
     "react": "~15.4.0",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
-    "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
-    "react-native-permissions": "^0.2.7"
+    "react-native-aws3": "0.0.4",
+    "react-native-permissions": "^0.2.7",
+    "socket.io": "^1.7.3"
   }
 }
