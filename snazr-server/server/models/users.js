@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+
 const userSchema = mongoose.Schema({
-  id: String,
-  name: Object,
+  userId: String,
   photos: Array
 });
 

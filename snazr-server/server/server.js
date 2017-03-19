@@ -1,7 +1,7 @@
 const express = require('express');
 const { client } = require('./cache/redis.js')
-// const mongoose = require('mongoose');
-// const User = require('./models/users');
+const mongoose = require('mongoose');
+const User = require('./models/users');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
@@ -145,9 +145,14 @@ io.on('connection', function(socket){
 // });
       
 app.post('/photos', function(req, res){
-  let data = req.body
-  // takes the data, which should be userId to send to, and the picture urls
-  // stores these into either database or cache
+  let { userId, requestId, cloudStorageUrl } = req.body
+  let model = new User({
+    userId: requestId
+  })
+  //checks the database for the user see if the user exist,
+  // if user exist then append to the photos array
+  // otehrwise if the user does not exist
+  // create new user with a new array and the cloudStorageUrl be the first entry
   // when user hits refresh on gallery page, it'll hit the get endpoint 
 })
 
