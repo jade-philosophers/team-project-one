@@ -77,7 +77,6 @@ const addNew = (data, client) => new Promise( (resolve, reject) =>{
 
     client.hget(data.lng, data.lat, function(err, peopleList){
         if(peopleList){
-            console.log('what is peopleslist: ', typeof peopleList)
             let jsonObj = JSON.parse(peopleList)
             let combinedEntry = [data, ...jsonObj]
             let stringed = JSON.stringify(combinedEntry)

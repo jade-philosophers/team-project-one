@@ -1,10 +1,10 @@
 {
   "name": "snazr",
-  "description": "watch you live your life in the lens of others",
+  "description": "watch you live your life through the lens of others",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
+    "install": "echo \"Run the command \"npm install\" in the client and in the server\""
   },
   "repository": {
     "type": "git",
