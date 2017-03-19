@@ -157,7 +157,15 @@ app.post('/photos', function(req, res){
 })
 
 app.get('/photos', function(req, res){
-  //use params to get data forhimself
+  let { userId } = req.query 
+  let model = new User({
+    userId
+  })
+  User.find(model, function(err, result){
+    if (err) console.log('could not find user from database: ', model.userId)
+    res.send(result)
+  })
+
 })
 
 
