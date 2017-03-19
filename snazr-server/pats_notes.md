@@ -31,5 +31,8 @@ HMSET "123.22" "56.31" '["joe", "anne"]' "56.32" '["janis"]' "56.34" '[]' "56.35
 
 
 
+zombie people when moving, loging in logging out, toggle on and off
 
-  
+also multiple entries are not being removed.
+
+

@@ -13,6 +13,7 @@ const app = express();
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const fs = require('fs')
 
 
 
@@ -69,36 +70,79 @@ app.post('/api/toggle_off', function(req, res){
   res.send('deleting user from discovered list')
 })
 
+
+// app.get('/test_socket', function(req, res){
+//   io.on('connection', function(socket){
+//     console.log('a new user connected: ', socket.id)
+//     socket.on('hello', function(msg){
+//       console.log('we got message: ', msg)
+//       socket.emit('response', 'hello velix how are u')
+//     })
+
+//     socket.on('disconnect', function(){
+//       console.log('weve disconnected')
+//     })
+
+//   })
+// })
+
+
 io.on('connection', function(socket){
-
-  socket.on('auth', function(userId){
-    let id = userId
-    console.log('id : ', id)
-    //check if we got stuff for this client
-    //then emit them
-    //store the stuff in our cache
-  })
-  console.log('a user connected', socket.id);
-  socket.on('chat message', function(msg){
-
-    console.log('message: ' + msg);
-  });
-
-  socket.on('request connection', data => {
-    let { userId, requestId } = data
-    let event = 'listen for:' + requestId
-    let msg = `${userId} requests ${requestId}`
-    // let msg = encrypt(msg)
-
-    socket.broadcast.emit('request connection', msg)
-    console.log(event, msg)
+  console.log('a new user connected: ', socket.id)
+  socket.on('sending photo', function(msg){
+    console.log('we got message1: ', msg)
+    socket.emit('response', 'hello velix how are u')
   })
 
+  socket.on('image', function(img){
+    let name, buffer = { img }
+    let myPath = path.join(__dirname, name)
+    fs.writeFile(myPath, img, 'binary',  function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+    }); 
+  })
 
   socket.on('disconnect', function(){
-    console.log('user disconnected', socket.id);
-  });
-});
+    console.log('weve disconnected')
+  })
+
+
+
+})
+// io.on('connection', function(socket){
+
+//   socket.on('auth', function(userId){
+//     let id = userId
+//     console.log('id : ', id)
+//     //check if we got stuff for this client
+//     //then emit them
+//     //store the stuff in our cache
+//   })
+//   console.log('a user connected', socket.id);
+//   socket.on('chat message', function(msg){
+
+//     console.log('message: ' + msg);
+//   });
+
+//   socket.on('request connection', data => {
+//     let { userId, requestId } = data
+//     let event = 'listen for:' + requestId
+//     let msg = `${userId} requests ${requestId}`
+//     // let msg = encrypt(msg)
+
+//     socket.broadcast.emit('request connection', msg)
+//     console.log(event, msg)
+//   })
+
+
+//   socket.on('disconnect', function(){
+//     console.log('user disconnected', socket.id);
+//   });
+// });
       
 app.post('/photos', function(req, res){
   let data = req.body
