@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
   userId: String,
+  pushToken: String,
   photos: Array
 });
 

@@ -1,6 +1,7 @@
 const { client } = require('./cache/redis.js')
 const User = require('./models/users');
 const mongoose = require('mongoose');
+const Expo = require('exponent-server-sdk');
 
 mongoose.connect('mongodb://localhost/snazr');
 
