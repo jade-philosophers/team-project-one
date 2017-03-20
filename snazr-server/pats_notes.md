@@ -4,7 +4,9 @@ HGETALL 123.22
 
 HMSET "123.22" "56.31" '["joe", "anne"]' "56.32" '["janis"]' "56.34" '[]' "56.35" '["pat", "rick"]'
 
+hget -122.40 37.79
 
+clear cache: FLUSHALL
 
 
 

@@ -35,8 +35,8 @@ app.use('/bundles', express.static(path.join(__dirname, '/../bundles')));
 
 
 app.route('/api/push_token')
-  .get(handlers.token.get)
   .post(handlers.token.post)
+  .delete(handlers.token.delete)
 
 app.route('/api/toggled_users')
   .get(handlers.toggle.get)

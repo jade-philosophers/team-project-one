@@ -77,3 +77,21 @@ async function registerForPushNotificationsAsync() {
     },
   });
 }
+
+
+
+console.log(a())
+function a (){
+  console.log('foo')
+}
+
+console.log(a())
+const a = function(){
+  console.log('foo')
+}
+
+
+console.log(a())
+const a = () => {
+  console.log('foo')
+}

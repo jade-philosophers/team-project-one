@@ -6,10 +6,30 @@ const Expo = require('exponent-server-sdk');
 mongoose.connect('mongodb://localhost/snazr');
 
 const token = {
-    get: (req, res) => {
+    post: (req, res) => {
+        let { token, userId } = req.body
+        let searchFor = { userId }
+        User.find(searchFor, function(err, result){
+            if(err) console.log('trying to find user to save push tokens,user: ', searchFor.userId)
+            if(result.length > 0 ){
+                let newEntry = result[0]
+                newEntry.pushToken = token
+                newEntry.save()
+                    .then(function(result){
+                        console.log('saved token succesfully')
+                        res.send('token saved')
+                    })
+            } else {
+                let newEntry = new User({
+
+                })
+
+            }
+        })
+
         res.send('hey thi sis get')
     },
-    post: (req, res) => {
+    delete: (req, res) => {
         res.send('hello this is post')
     }
 }
@@ -63,11 +83,11 @@ const photo = {
             toSave.photos = [ cloudStorageUrl, ...photos ]
 
             toSave.save()
-                .then(function(result){
+              .then(function(result){
                 console.log('1: saved photos successfully')
                 res.send('photo saved')
-                })
-                .catch(function(err){
+              })
+              .catch(function(err){
                 console.log('ERRROR IS: ', err)
                 console.log('1: did not save photos successfully')
                 res.send('photo did not save, err!')
@@ -75,17 +95,17 @@ const photo = {
             } else {
                 let photos = [ cloudStorageUrl ]
                 let toSave = new User({
-                userId: requestId,
-                photos: photos
+                    userId: requestId,
+                    photos: photos
                 })
                 toSave.save()
-                .then(function(result){
-                console.log('2: saved photos successfully')
-                res.send('photo saved')
+                  .then(function(result){
+                  console.log('2: saved photos successfully')
+                  res.send('photo saved')
                 })
                 .catch(function(err){
-                console.log('2: did not save photos successfully')
-                res.send('photo did not save, err!')
+                  console.log('2: did not save photos successfully')
+                  res.send('photo did not save, err!')
                 })
             }
             
