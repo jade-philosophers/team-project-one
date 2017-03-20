@@ -186,6 +186,24 @@ app.post('/photos', function(req, res){
     }
     
   })
+  User.find(mode, function(err, result){
+    if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
+    console.log('weve retrieved from db: ', result)
+    let flattenedResult = _.flattenDeep(result)
+    let toSaveArray = [ cloudStorageUrl, ...flattenedResult ]
+    let toSave = new User({
+      userId: requestId,
+      photos: toSaveArray
+    })
+    toSave.save()
+      .then(function(res){
+        console.log('saved photos successfully')
+      })
+      .catch(function(err){
+        console.log('did not save photos successfully')
+      })
+
+  })
   //checks the database for the user see if the user exist,
   // if user exist then append to the photos array
   // otehrwise if the user does not exist
