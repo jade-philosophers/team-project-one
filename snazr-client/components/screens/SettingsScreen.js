@@ -5,7 +5,6 @@ import Router from '../navigation/Router';
 import helpers from '../config/util';
 import axios from 'axios';
 
-
 export default class SettingsScreen extends Component {
 
   constructor(props) {
@@ -19,6 +18,8 @@ export default class SettingsScreen extends Component {
   static route = {
     navigationBar: {
       title: 'Settings',
+      backgroundColor: '#BA90FF',
+      tintColor: '#ffff'
     }
   }
 
@@ -75,8 +76,8 @@ export default class SettingsScreen extends Component {
                     <Button onPress={this._goToMap}>
                       <Icon name="map" />
                     </Button>
-                    <Button active>
-                      <Icon name="settings" />
+                    <Button active style={{backgroundColor: '#DDC5FF'}}>
+                      <Icon name="settings" style={{color: '#ffff'}} />
                     </Button>
                 </FooterTab>
             </Footer>

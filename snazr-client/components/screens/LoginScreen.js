@@ -1,20 +1,44 @@
 import React, { Component } from 'react';
-import Expo from 'expo';
-import { Text, View, StyleSheet, AsyncStorage, Image } from 'react-native';
+import Expo, { Asset } from 'expo';
+import { Text, View, StyleSheet, AsyncStorage, Image, Animated, Dimensions } from 'react-native';
 import { Icon } from 'native-base';
 import helpers from '../config/util';
 import Router from '../navigation/Router';
-
+const videoSource = require('./../../assets/icons/test.mp4');
+const images = [require('../../assets/icons/app.png'), require('../../assets/icons/app2.png'), require('../../assets/icons/test-ss.png')];
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.logIn = this.logIn.bind(this);
+    this.state = {
+      loaded: false
+    }
+
+    this._initialLogin();
+    this._initialLogin = this._initialLogin.bind(this);
+    this._logIn = this._logIn.bind(this);
   }
 
-  async logIn() {
+
+  async _initialLogin () {
     const session = await AsyncStorage.getItem('com.snazr.name');
-    if (!session) {
+    this.setState({session: session});
+    if(session) {
+      this.props.navigator.push(Router.getRoute('home'));
+    }
+  }
+
+  async componentWillMount() {
+    await images.map(image => {
+      Asset.fromModule(image).downloadAsync();
+    });
+    Asset.fromModule(videoSource).downloadAsync().then(()=> {
+      this.setState({loaded: true});
+    });
+  }
+
+  async _logIn() {
+    if (!this.state.session) {
       const data = await Expo.Facebook.logInWithReadPermissionsAsync( helpers.FB_APP_ID, {
         permissions: ['user_photos', 'public_profile' ]
       });
@@ -34,36 +58,42 @@ export default class LoginScreen extends Component {
       this.props.navigator.push(Router.getRoute('home'));
     }
   }
+  
+  render() {
+    if (!this.state.loaded) {
+      return <Expo.Components.AppLoading />;
+    }
 
-  render () {
-    return(
+    return (
       <View style={styles.container}>
-        <View>
-          <Image style={{backgroundColor: '#eeee', height: 100, width: 300, marginTop: 50 }} source={require('../../assets/icons/app.png')} />
+        <View style={styles.background}>
+          <Expo.Components.Video style={{borderRadius: Dimensions.get('window').width/2,  width: Dimensions.get('window').width, height: Dimensions.get('window').height}} resizeMode="cover" source={videoSource} repeat={true} mute={true} />
         </View>
-        <View style={styles.facebook}>
-          <Icon onPress={this.logIn} name="logo-facebook" style={{fontSize: 75, color: '#155094'}} />
-        </View> 
-    </View>
-
-    )
+        <View style={styles.container}>
+          <View>
+            <Image style={{ height: 55, width: 300, marginTop: 100 }} source={images[0]} />
+            <Image style={{ height: 20, width: 300, marginTop: 50}} source={images[1]} />
+          </View>
+          <View >
+            <Icon onPress={this._logIn} name="logo-facebook" style={{fontSize: 70, color: '#155094', marginBottom: 30}} />
+          </View> 
+        </View>
+      </View>
+    );
   }
 
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eeee',
+    backgroundColor: 'transparent',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
-  facebook: {
-    alignItems: 'center',
-    marginTop: 50
-  },
-  header: {
-    fontSize: 50,
-    fontWeight: 'bold'
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'black'
   }
 });

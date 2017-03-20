@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Switch, AsyncStorage, Image } from 'react-native';
+import { View, Switch, AsyncStorage, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Router from '../navigation/Router';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem } from 'native-base';
 import Expo from 'expo';
@@ -10,9 +10,12 @@ export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toggled: helpers.toggled
+      toggled: helpers.toggled,
+      pictures: []
     }
-
+    this._getPictures();
+    this._refresh = this._refresh.bind(this);
+    this._goToImg = this._goToImg.bind(this);
     this._goToMap = this._goToMap.bind(this);
     this._goToSettings = this._goToSettings.bind(this);
     this._toggleLocation = this._toggleLocation.bind(this);
@@ -25,10 +28,25 @@ export default class HomeScreen extends Component {
     this.setState({toggled: helpers.toggled});
     if( helpers.toggled ) {
       this._getAndSendLocationData();
-      // setTimeout(this._toggleLocation, 100000);
     } else {
       this._searchAndRemoveLocationData();
     }
+  }
+
+  async _getPictures() {
+    const id = await AsyncStorage.getItem('com.snazr.id');
+    const obj = {
+      params: {
+        userId: id
+      }
+    }
+    axios.get(helpers.HOST_URL + 'photos', obj )
+         .then((resp) => {
+           this.setState({pictures: resp.data[0].photos});
+         })
+         .catch((err) => {
+           console.log(err);
+         });
   }
 
   async _getAndSendLocationData() {
@@ -69,19 +87,27 @@ export default class HomeScreen extends Component {
     this.props.navigator.push(Router.getRoute('settings'));
   }
 
+  _goToImg(e) {
+    console.log('hi');
+    // console.log('event is: ', e);
+  }
+
+  _refresh() {
+    this._getPictures();
+  }
 
   render() {
       return (
           <Container>
-              <Header>
+              <Header style={{backgroundColor: '#BA90FF'}}>
                   <Left>
-                      <Button transparent>
-                          <Icon name='refresh' />
+                      <Button transparent onPress={this._refresh}>
+                          <Icon name='refresh' style={{color: '#ffff'}}/>
                       </Button>
                   </Left>
                   <Body>
-                      <Title>Home</Title>
-                      <Text style={{fontSize: 10}}>Request Photos!</Text>
+                      <Title style={{color:'#ffff'}}>Home</Title>
+                      <Text style={{fontSize: 10, color:'#ffff'}}>Request Photos!</Text>
                   </Body>
                   <Right>
                     <Switch onValueChange={this._toggleLocation} value={this.state.toggled} />
@@ -91,11 +117,14 @@ export default class HomeScreen extends Component {
                 <ListItem>
                   <Text>Gallery: Photos Taken Of You!</Text>
                 </ListItem>
+                <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+                  {this.state.pictures.map((photo, index) => <TouchableWithoutFeedback key={index} onPress={this._goToImg}><Image source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/></TouchableWithoutFeedback> )}
+                </View>
               </Content>
               <Footer>
                   <FooterTab>
-                      <Button active>
-                        <Icon name="home" />
+                      <Button active style={{backgroundColor: '#DDC5FF'}}>
+                        <Icon name="home" style={{color: '#ffff'}}/>
                       </Button>
                       <Button onPress={this._goToMap}>
                         <Icon name="map" />
