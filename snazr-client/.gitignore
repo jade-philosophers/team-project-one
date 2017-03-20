@@ -2,3 +2,5 @@ node_modules/**/*
 .expo/*
 npm-debug.*
 .vscode
+DS_Store
+components/config/secure.js

@@ -16,6 +16,8 @@
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
     "react-native-aws3": "0.0.4",
     "react-native-permissions": "^0.2.7",
-    "socket.io": "^1.7.3"
+    "react-native-video": "^1.0.0",
+    "socket.io": "^1.7.3",
+    "uuid": "^3.0.1"
   }
 }
