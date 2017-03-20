@@ -159,11 +159,12 @@ app.post('/photos', function(req, res){
       toSave.photos = [ cloudStorageUrl, ...photos ]
 
       toSave.save()
-        .then(function(res){
+        .then(function(result){
           console.log('1: saved photos successfully')
           res.send('photo saved')
         })
         .catch(function(err){
+          console.log('ERRROR IS: ', err)
           console.log('1: did not save photos successfully')
           res.send('photo did not save, err!')
         })
@@ -174,7 +175,7 @@ app.post('/photos', function(req, res){
           photos: photos
         })
         toSave.save()
-        .then(function(res){
+        .then(function(result){
           console.log('2: saved photos successfully')
           res.send('photo saved')
         })
@@ -199,6 +200,7 @@ app.get('/photos', function(req, res){
   })
   User.find(model, function(err, result){
     if (err) console.log('could not find user from database: ', model.userId)
+    console.log('from our database we got: ', result)
     res.send(result)
   })
 
