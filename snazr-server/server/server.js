@@ -1,13 +1,17 @@
 const express = require('express');
-const { client } = require('./cache/redis.js')
+const path = require('path');
 const mongoose = require('mongoose');
+const _ = require('lodash');
+
+//dependencies written by us
+const { client } = require('./cache/redis.js')
 const User = require('./models/users');
 const bodyParser = require('body-parser');
-const path = require('path');
 const app = express();
 // const Pusher = require('pusher')
 // const { pusher } = require('./pusher_secrets.js')
-const _ = require('lodash');
+
+//server dependencies
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const fs = require('fs');
