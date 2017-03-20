@@ -18,7 +18,7 @@ const fs = require('fs');
 
 
 const port = process.env.PORT || 8000;
-// mongoose.connect('mongodb://localhost/snazr');
+mongoose.connect('mongodb://localhost/snazr');
 
 // passport.use( new FacebookStrategy( {
 //   clientID: FB.FACEBOOK_APP_ID,
@@ -146,25 +146,25 @@ io.on('connection', function(socket){
       
 app.post('/photos', function(req, res){
   let { userId, requestId, cloudStorageUrl } = req.body
-  let model = new User({
+  console.log('got some data', userId, requestId, cloudStorageUrl)
+  let model = {
     userId: requestId
-  })
+  }
   User.find(model, function(err, result){
     if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
     if(result.length > 0){
       console.log('weve retrieved from db: ', result)
-      // let flattenedResult = _.flattenDeep(result)
       let toSave = result[0]
       let photos = [...toSave.photos]
       toSave.photos = [ cloudStorageUrl, ...photos ]
 
       toSave.save()
         .then(function(res){
-          console.log('saved photos successfully')
+          console.log('1: saved photos successfully')
           res.send('photo saved')
         })
         .catch(function(err){
-          console.log('did not save photos successfully')
+          console.log('1: did not save photos successfully')
           res.send('photo did not save, err!')
         })
     } else {
@@ -175,11 +175,11 @@ app.post('/photos', function(req, res){
         })
         toSave.save()
         .then(function(res){
-          console.log('saved photos successfully')
+          console.log('2: saved photos successfully')
           res.send('photo saved')
         })
         .catch(function(err){
-          console.log('did not save photos successfully')
+          console.log('2: did not save photos successfully')
           res.send('photo did not save, err!')
         })
     }
