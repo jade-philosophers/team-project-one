@@ -1,7 +1,0 @@
-node_modules/**/*
-.expo/*
-npm-debug.*
-snazr-client/.vscode
-.vscode/**/*
-DS_Store
-snazr-client/components/config/secure.js
