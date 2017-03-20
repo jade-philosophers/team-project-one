@@ -161,9 +161,11 @@ app.post('/photos', function(req, res){
       toSave.save()
         .then(function(res){
           console.log('saved photos successfully')
+          res.send('photo saved')
         })
         .catch(function(err){
           console.log('did not save photos successfully')
+          res.send('photo did not save, err!')
         })
     } else {
         let photos = [ cloudStorageUrl ]
@@ -174,9 +176,11 @@ app.post('/photos', function(req, res){
         toSave.save()
         .then(function(res){
           console.log('saved photos successfully')
+          res.send('photo saved')
         })
         .catch(function(err){
           console.log('did not save photos successfully')
+          res.send('photo did not save, err!')
         })
     }
     
