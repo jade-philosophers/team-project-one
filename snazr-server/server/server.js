@@ -195,9 +195,8 @@ app.post('/photos', function(req, res){
 
 app.get('/photos', function(req, res){
   let { userId } = req.query 
-  let model = new User({
-    userId
-  })
+  console.log('what is userId', userId)
+  let model = { userId }
   User.find(model, function(err, result){
     if (err) console.log('could not find user from database: ', model.userId)
     console.log('from our database we got: ', result)
