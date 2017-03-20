@@ -11,11 +11,21 @@ export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
-      rendered: false,
+      loaded: false
     }
 
-    this.logIn = this.logIn.bind(this);
+    this._initialLogin();
+    this._initialLogin = this._initialLogin.bind(this);
+    this._logIn = this._logIn.bind(this);
+  }
+
+
+  async _initialLogin () {
+    const session = await AsyncStorage.getItem('com.snazr.name');
+    this.setState({session: session});
+    if(session) {
+      this.props.navigator.push(Router.getRoute('home'));
+    }
   }
 
   async componentWillMount() {
@@ -27,9 +37,8 @@ export default class LoginScreen extends Component {
     });
   }
 
-  async logIn() {
-    const session = await AsyncStorage.getItem('com.snazr.name');
-    if (!session) {
+  async _logIn() {
+    if (!this.state.session) {
       const data = await Expo.Facebook.logInWithReadPermissionsAsync( helpers.FB_APP_ID, {
         permissions: ['user_photos', 'public_profile' ]
       });
@@ -62,11 +71,11 @@ export default class LoginScreen extends Component {
         </View>
         <View style={styles.container}>
           <View>
-              <Image style={{ height: 55, width: 300, marginTop: 100 }} source={images[0]} />
-              <Image style={{ height: 20, width: 300, marginTop: 50}} source={images[1]} />
+            <Image style={{ height: 55, width: 300, marginTop: 100 }} source={images[0]} />
+            <Image style={{ height: 20, width: 300, marginTop: 50}} source={images[1]} />
           </View>
           <View >
-              <Icon onPress={this.logIn} name="logo-facebook" style={{fontSize: 70, color: '#155094', marginBottom: 30}} />
+            <Icon onPress={this._logIn} name="logo-facebook" style={{fontSize: 70, color: '#155094', marginBottom: 30}} />
           </View> 
         </View>
       </View>

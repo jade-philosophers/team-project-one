@@ -1,13 +1,23 @@
 {
   "name": "snazr",
-  "description": "watch you live your life through the lens of others",
   "version": "1.0.0",
+  "description": "Watch you live your life through the lens of others.",
+  "author": "Felix Tran, Patrick Xie, Eric Chen, Veer Ganghwal",
   "private": true,
-  "scripts": {
-    "install": "echo \"Run the command \"npm install\" in the client and in the server\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/patrickxie/team-project-one.git"
+  "main": "./components/main.js",
+  "dependencies": {
+    "@expo/ex-navigation": "^2.9.2",
+    "@expo/vector-icons": "~4.0.0",
+    "axios": "^0.15.3",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "expo": "^14.0.2",
+    "native-base": "^2.0.12",
+    "react": "~15.4.0",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
+    "react-native-aws3": "0.0.4",
+    "react-native-permissions": "^0.2.7",
+    "react-native-video": "^1.0.0",
+    "socket.io": "^1.7.3",
+    "uuid": "^3.0.1"
   }
 }

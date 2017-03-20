@@ -6,6 +6,8 @@ import Router from './navigation/Router';
 
 
 class App extends Component {
+
+  
   render() {
     return (
       <NavigationProvider router={Router}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Switch, AsyncStorage, Image, Dimensions } from 'react-native';
+import { View, Switch, AsyncStorage, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Router from '../navigation/Router';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem } from 'native-base';
 import Expo from 'expo';
@@ -14,6 +14,8 @@ export default class HomeScreen extends Component {
       pictures: []
     }
     this._getPictures();
+    this._refresh = this._refresh.bind(this);
+    this._goToImg = this._goToImg.bind(this);
     this._goToMap = this._goToMap.bind(this);
     this._goToSettings = this._goToSettings.bind(this);
     this._toggleLocation = this._toggleLocation.bind(this);
@@ -40,7 +42,6 @@ export default class HomeScreen extends Component {
     }
     axios.get(helpers.HOST_URL + 'photos', obj )
          .then((resp) => {
-           console.log(resp.data[0].photos.length);
            this.setState({pictures: resp.data[0].photos});
          })
          .catch((err) => {
@@ -86,13 +87,21 @@ export default class HomeScreen extends Component {
     this.props.navigator.push(Router.getRoute('settings'));
   }
 
+  _goToImg(e) {
+    console.log('hi');
+    // console.log('event is: ', e);
+  }
+
+  _refresh() {
+    this._getPictures();
+  }
 
   render() {
       return (
           <Container>
               <Header style={{backgroundColor: '#BA90FF'}}>
                   <Left>
-                      <Button transparent>
+                      <Button transparent onPress={this._refresh}>
                           <Icon name='refresh' style={{color: '#ffff'}}/>
                       </Button>
                   </Left>
@@ -109,7 +118,7 @@ export default class HomeScreen extends Component {
                   <Text>Gallery: Photos Taken Of You!</Text>
                 </ListItem>
                 <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-                  {this.state.pictures.map((photo, index) => <Image key={index} source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/> )}
+                  {this.state.pictures.map((photo, index) => <TouchableWithoutFeedback key={index} onPress={this._goToImg}><Image source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/></TouchableWithoutFeedback> )}
                 </View>
               </Content>
               <Footer>

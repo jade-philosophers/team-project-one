@@ -5,7 +5,6 @@ import Router from '../navigation/Router';
 import helpers from '../config/util';
 import axios from 'axios';
 
-
 export default class SettingsScreen extends Component {
 
   constructor(props) {

@@ -97,6 +97,7 @@ export default class Map extends Component {
   }
 
   render() {
+
     return (
       <MapView style={{flex: 1}} region={this.state.region} onRegionChange={this._onRegionChange}>
         <Marker key={this.state.id} coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} title={this.state.name} onPress={this._setTargetCoords} onCalloutPress={this._takeImage}>
