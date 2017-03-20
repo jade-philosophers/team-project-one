@@ -19,6 +19,8 @@ export default class MapScreen extends Component {
   static route = {
     navigationBar: {
       title: 'Map',
+      backgroundColor: '#BA90FF',
+      tintColor: '#ffff'
     }
   }
 
@@ -28,7 +30,7 @@ export default class MapScreen extends Component {
       this.setState({latitude: latitude, longitude: longitude });
       let obj = { params: { lng: longitude.toFixed(2), lat: latitude.toFixed(2)} }
       axios.get(helpers.HOST_URL + 'api/toggled_users', obj).then(response => {
-        console.log(response.data);
+        console.log(response.data, 'users around');
         this.setState({ nearbyPeople: response.data });
       });
     });

@@ -7,9 +7,11 @@ export default class InstructionsScreen extends Component {
   static route = {
     navigationBar: {
       title: 'Instructions',
+      backgroundColor: '#BA90FF',
+      tintColor: '#ffff'
     }
   }
-  
+
   render(){
     return (
       <Container>
@@ -21,22 +23,19 @@ export default class InstructionsScreen extends Component {
             <Text style={{textAlign: 'center', fontStyle: 'italic', marginTop: 5, fontSize: 14}}>Your one place for photo sharing and expression!</Text>
           </ListItem>
           <ListItem>
-            <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 10}}>To get started:</Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 10}}>To start snazring:</Text>
           </ListItem>
           <ListItem>
-            <Text style={{fontSize: 14, marginTop: 6 }}>1. Select the switch in the top-right corner and notify others that you want your picture taken!</Text>
+            <Text style={{fontSize: 14, marginTop: 6 }}>1. Switch the toggle on the top-right corner of the <Icon style={{fontSize: 14}}name="home" /> screen to let other photographers find you.</Text>
           </ListItem>
           <ListItem>
-            <Text style={{fontSize: 14, marginTop: 4 }}>2. When you are finished, select the switch again to toggle the feature off.</Text>
+            <Text style={{fontSize: 14, marginTop: 4 }}>2. Showcase your photography skills by selecting the <Icon style={{fontSize: 14}}name="map" /> button below to find nearby models who want their glamour shot!</Text>
           </ListItem>
           <ListItem>
-            <Text style={{fontSize: 14, marginTop: 4 }}>3. To take pictures of others, select the <Icon style={{fontSize: 14}}name="map" /> button below to see nearby users who want their picture taken!</Text>
+            <Text style={{fontSize: 14, marginTop: 4 }}>3. Once you find a model, tap his/her profile icon to turn on the camera and begin snazring away!</Text>
           </ListItem>
           <ListItem>
-            <Text style={{fontSize: 14, marginTop: 4 }}>4. Once you've found someone, select their marker and the following callout to open the camera and begin shooting!</Text>
-          </ListItem>
-          <ListItem>
-            <Text style={{fontSize: 14, marginTop: 4 }}>5. If you wish to logout, select the <Icon style={{fontSize: 14}}name="settings" /> button below</Text>
+            <Text style={{fontSize: 14, marginTop: 4 }}>4. If you wish to log out, select the <Icon style={{fontSize: 14}}name="settings" /> button below.</Text>
           </ListItem>
         </Content>
       </Container>
