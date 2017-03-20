@@ -68,10 +68,10 @@ export default class Map extends Component {
       console.log(result.uri);
       const uri = result.uri;
       const type = uri.split('.')[1];
-      const target = this.props.nearbyPeople.slice().filter(person => {return person.latPrecise === this.state.tarLat && person.lngPrecise === this.state.tarLng;});
+      let target = this.props.nearbyPeople.slice().filter(person => {return person.latPrecise === this.state.tarLat && person.lngPrecise === this.state.tarLng;});
       const id = await uuidV1();
       console.log(target, type, id);
-
+      target = target.length > 0 ? target : [{ userId: this.state.id, name: this.state.name }];
       const name = target[0].name.split('').join('-').toLowerCase() + '-' + id;
       const file = {
         uri: uri,
@@ -88,7 +88,7 @@ export default class Map extends Component {
             requestId: target[0].userId,
             cloudStorageUrl: response.body.postResponse.location
           }
-          axios.post(helpers.HOST_URL + 'photos' , imageObj).then((response) => {
+          axios.post(helpers.HOST_URL + 'api/photos' , imageObj).then((response) => {
             console.log('successfully posted !', response.data);
           });
         }
