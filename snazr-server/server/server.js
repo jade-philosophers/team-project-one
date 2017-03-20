@@ -149,23 +149,37 @@ app.post('/photos', function(req, res){
   let model = new User({
     userId: requestId
   })
-  User.find(mode, function(err, result){
+  User.find(model, function(err, result){
     if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
-    console.log('weve retrieved from db: ', result)
-    let flattenedResult = _.flattenDeep(result)
-    let toSaveArray = [ cloudStorageUrl, ...flattenedResult ]
-    let toSave = new User({
-      userId: requestId,
-      photos: toSaveArray
-    })
-    toSave.save()
-      .then(function(res){
-        console.log('saved photos successfully')
-      })
-      .catch(function(err){
-        console.log('did not save photos successfully')
-      })
+    if(result.length > 0){
+      console.log('weve retrieved from db: ', result)
+      // let flattenedResult = _.flattenDeep(result)
+      let toSave = result[0]
+      let photos = [...toSave.photos]
+      toSave.photos = [ cloudStorageUrl, ...photos ]
 
+      toSave.save()
+        .then(function(res){
+          console.log('saved photos successfully')
+        })
+        .catch(function(err){
+          console.log('did not save photos successfully')
+        })
+    } else {
+        let photos = [ cloudStorageUrl ]
+        let toSave = new User({
+          userId: requestId,
+          photos: photos
+        })
+        toSave.save()
+        .then(function(res){
+          console.log('saved photos successfully')
+        })
+        .catch(function(err){
+          console.log('did not save photos successfully')
+        })
+    }
+    
   })
   //checks the database for the user see if the user exist,
   // if user exist then append to the photos array
