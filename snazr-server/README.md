@@ -78,3 +78,6 @@ it should look something like this
   ]
 }
 
+
+
+don't worry about bundles, ghetto_client, public folders, those are just to test if servers are running and serves a index.html when you go to localhost, feel free to delete them 
