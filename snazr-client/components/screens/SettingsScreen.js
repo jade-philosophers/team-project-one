@@ -35,8 +35,8 @@ export default class SettingsScreen extends Component {
     const loc = await AsyncStorage.getItem('com.snazr.location');
     if (helpers.toggled) {
       helpers.toggled = !helpers.toggled;
-      axios.post(helpers.HOST_URL + 'api/toggle_off', JSON.parse(loc)).then(response => {
-          console.log('successfully removed');
+      axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: this.state.location}).then(response => {
+        console.log('successfully removed');
       });
     }
     await AsyncStorage.clear().then(()=> {

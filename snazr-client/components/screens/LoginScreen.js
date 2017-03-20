@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, AsyncStorage, Image, Animated, Dimensions } fro
 import { Icon } from 'native-base';
 import helpers from '../config/util';
 import Router from '../navigation/Router';
+import config from '../config/secure';
 const videoSource = require('./../../assets/icons/test.mp4');
 const images = [require('../../assets/icons/app.png'), require('../../assets/icons/app2.png'), require('../../assets/icons/test-ss.png')];
 
@@ -39,7 +40,7 @@ export default class LoginScreen extends Component {
 
   async _logIn() {
     if (!this.state.session) {
-      const data = await Expo.Facebook.logInWithReadPermissionsAsync( helpers.FB_APP_ID, {
+      const data = await Expo.Facebook.logInWithReadPermissionsAsync( config.FB_APP_ID, {
         permissions: ['user_photos', 'public_profile' ]
       });
       if ( data.type === 'success' ) {

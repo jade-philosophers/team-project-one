@@ -40,7 +40,7 @@ export default class HomeScreen extends Component {
         userId: id
       }
     }
-    axios.get(helpers.HOST_URL + 'photos', obj )
+    axios.get(helpers.HOST_URL + 'api/photos', obj )
          .then((resp) => {
            this.setState({pictures: resp.data[0].photos});
          })
@@ -74,7 +74,7 @@ export default class HomeScreen extends Component {
 
   _searchAndRemoveLocationData() {
     console.log('removing');
-    axios.post(helpers.HOST_URL + 'api/toggle_off', this.state.location).then(response => {
+    axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: this.state.location}).then(response => {
       console.log('successfully removed');
     });
   }
