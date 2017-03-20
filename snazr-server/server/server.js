@@ -5,34 +5,22 @@ const User = require('./models/users');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-// const FB = require('./config/fb');
-// const passport = require('passport');
-// const FacebookStrategy = require('passport-facebook').Strategy;
 // const Pusher = require('pusher')
 // const { pusher } = require('./pusher_secrets.js')
 const _ = require('lodash');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const fs = require('fs');
-
-
+const morgan = require('morgan');
+const Expo = require('exponent-server-sdk');
+const { handlers } = require('./routeHandlers.js')
 
 const port = process.env.PORT || 8000;
 mongoose.connect('mongodb://localhost/snazr');
 
-// passport.use( new FacebookStrategy( {
-//   clientID: FB.FACEBOOK_APP_ID,
-//   clientSecret: FB.FACEBOOK_APP_SECRET,
-//   callbackUrl: FB.callbackUrl
-// }, (accessToken, refreshToken, profile, done) => {
-//   User.findOrCreate({id: profile.id }, (err, user) => {
-//     if (err) {
-//       return done(err);
-//     } else {
-//       done (null, user);
-//     }
-//   });
-// }));
+let expo = new Expo();
+
+app.use(morgan('combined'))
 
 app.use(bodyParser.json());
 //serve up public folder on endpoint '/'
@@ -40,9 +28,21 @@ app.use(express.static(path.join(__dirname, '../public')));
 //serve up bundles folder on endpoint '/bundles'
 app.use('/bundles', express.static(path.join(__dirname, '/../bundles')));
 
-app.get('/api/test', function (req, res, next){
-  res.send('what the fuck is up');
-});
+
+
+
+// app.post('/api/push_token', function(req, res){
+//   let data = req.body
+//   res.send('what is up mang')
+//   // if the user did not grant permission there would be no request at all
+
+// })
+
+
+app.route('/api/push_token')
+  .get(handlers.token.get)
+  .post(handlers.token.post)
+
 
 app.get('/api/toggled_users', function(req, res){
   //should send a list of all the users that have their discoverability toggled on
@@ -53,7 +53,6 @@ app.get('/api/toggled_users', function(req, res){
   // 
   
   let data = req.query 
-  console.log('weve made a request', data)
   client.util.get(data, client , 0.02)  //specify range here, 0.02 means within 2kilometer
   .then(result => res.send(result))
 })
@@ -146,7 +145,6 @@ io.on('connection', function(socket){
       
 app.post('/photos', function(req, res){
   let { userId, requestId, cloudStorageUrl } = req.body
-  console.log('got some data', userId, requestId, cloudStorageUrl)
   let model = {
     userId: requestId
   }
@@ -195,7 +193,6 @@ app.post('/photos', function(req, res){
 
 app.get('/photos', function(req, res){
   let { userId } = req.query 
-  console.log('what is userId', userId)
   let model = { userId }
   User.find(model, function(err, result){
     if (err) console.log('could not find user from database: ', model.userId)
@@ -204,6 +201,7 @@ app.get('/photos', function(req, res){
   })
 
 })
+
 
 
 // app.get('/joined', function(req, res){
