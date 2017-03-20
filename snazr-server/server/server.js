@@ -1,7 +1,7 @@
 const express = require('express');
 const { client } = require('./cache/redis.js')
-// const mongoose = require('mongoose');
-// const User = require('./models/users');
+const mongoose = require('mongoose');
+const User = require('./models/users');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
@@ -10,15 +10,15 @@ const app = express();
 // const FacebookStrategy = require('passport-facebook').Strategy;
 // const Pusher = require('pusher')
 // const { pusher } = require('./pusher_secrets.js')
-
+const _ = require('lodash');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const fs = require('fs')
+const fs = require('fs');
 
 
 
 const port = process.env.PORT || 8000;
-// mongoose.connect('mongodb://localhost/snazr');
+mongoose.connect('mongodb://localhost/snazr');
 
 // passport.use( new FacebookStrategy( {
 //   clientID: FB.FACEBOOK_APP_ID,
@@ -145,14 +145,64 @@ io.on('connection', function(socket){
 // });
       
 app.post('/photos', function(req, res){
-  let data = req.body
-  // takes the data, which should be userId to send to, and the picture urls
-  // stores these into either database or cache
+  let { userId, requestId, cloudStorageUrl } = req.body
+  console.log('got some data', userId, requestId, cloudStorageUrl)
+  let model = {
+    userId: requestId
+  }
+  User.find(model, function(err, result){
+    if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
+    if(result.length > 0){
+      console.log('weve retrieved from db: ', result)
+      let toSave = result[0]
+      let photos = [...toSave.photos]
+      toSave.photos = [ cloudStorageUrl, ...photos ]
+
+      toSave.save()
+        .then(function(result){
+          console.log('1: saved photos successfully')
+          res.send('photo saved')
+        })
+        .catch(function(err){
+          console.log('ERRROR IS: ', err)
+          console.log('1: did not save photos successfully')
+          res.send('photo did not save, err!')
+        })
+    } else {
+        let photos = [ cloudStorageUrl ]
+        let toSave = new User({
+          userId: requestId,
+          photos: photos
+        })
+        toSave.save()
+        .then(function(result){
+          console.log('2: saved photos successfully')
+          res.send('photo saved')
+        })
+        .catch(function(err){
+          console.log('2: did not save photos successfully')
+          res.send('photo did not save, err!')
+        })
+    }
+    
+  })
+  //checks the database for the user see if the user exist,
+  // if user exist then append to the photos array
+  // otehrwise if the user does not exist
+  // create new user with a new array and the cloudStorageUrl be the first entry
   // when user hits refresh on gallery page, it'll hit the get endpoint 
 })
 
 app.get('/photos', function(req, res){
-  //use params to get data forhimself
+  let { userId } = req.query 
+  console.log('what is userId', userId)
+  let model = { userId }
+  User.find(model, function(err, result){
+    if (err) console.log('could not find user from database: ', model.userId)
+    console.log('from our database we got: ', result)
+    res.send(result)
+  })
+
 })
 
 
