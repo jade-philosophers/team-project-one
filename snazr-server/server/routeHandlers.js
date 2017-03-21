@@ -117,7 +117,7 @@ const photo = {
         User.find(model, function(err, result){
             if(err) console.log('trying to save new photos, but cant find user: ', err)
             if(result.length > 0){
-                console.log('weve retrieved from db: ', result)
+                console.log('we have retrieved from db: ', result)
                 let toSave = result[0]
                 let stringToken, objToken
                 if(toSave.pushToken){
