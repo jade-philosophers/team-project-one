@@ -122,7 +122,10 @@ const photo = {
                 let toSave = result[0]
                 let stringToken = toSave.pushToken
                 let objToken = JSON.parse(stringToken)
-                let Token = objToken.value
+                let Token;
+                if(objToken.value){
+                    Token = objToken.value
+                }
                 console.log('our token is: ', Token)
                 let photos = [...toSave.photos]
                 toSave.photos = [ cloudStorageUrl, ...photos ]
@@ -146,6 +149,7 @@ const photo = {
               let photos = [ cloudStorageUrl ]
               let toSave = new User({
                 userId: requestId,
+                pushToken: "",
                 photos: photos
               })
               toSave.save()
