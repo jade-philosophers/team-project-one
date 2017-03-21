@@ -25,7 +25,7 @@ export default class HomeScreen extends Component {
     this._done = this._done.bind(this);
     this._deletePhoto = this._deletePhoto.bind(this);
     this._downloadPhoto = this._downloadPhoto.bind(this);
-    this._handleNotification = this._handleNotification.bind(this);
+    // this._handleNotification = this._handleNotification.bind(this);
     this._goToSettings = this._goToSettings.bind(this);
     this._toggleLocation = this._toggleLocation.bind(this);
     this._getAndSendLocationData = this._getAndSendLocationData.bind(this);
@@ -104,11 +104,18 @@ export default class HomeScreen extends Component {
     
   }
 
-  _searchAndRemoveLocationData() {
+  async _searchAndRemoveLocationData() {
     console.log('removing');
-    axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: this.state.location}).then(response => {
-      console.log('successfully removed');
-    });
+    if (this.state.location) {
+      axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: this.state.location}).then(response => {
+        console.log('successfully removed');
+      });
+    } else {
+      const location = await AsyncStorage.getItem('com.snazr.location');
+      axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: JSON.parse(location)}).then(response => {
+        console.log('successfully removed');
+      });
+    }
   }
 
   _goToMap() {
