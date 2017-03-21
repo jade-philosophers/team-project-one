@@ -46,6 +46,7 @@ app.route('/api/toggled_users')
 app.route('/api/photos')
   .get(handlers.photo.get)
   .post(handlers.photo.post)
+  .delete(handlers.photo.delete)
 
 server.listen(port, () => {
   console.log(`Server is listening on ${port}`);

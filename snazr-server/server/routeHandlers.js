@@ -12,7 +12,7 @@ const token = {
         let token = JSON.stringify(tokenObject)
         let searchFor = { userId }
         User.find(searchFor, function(err, result){
-            if(err) console.log('trying to find user to save push tokens,user: ', searchFor.userId)
+            if(err) console.log('trying to find user to save push tokens,user: ', err)
             if(result.length > 0 ){
                 let newEntry = result[0]
                 console.log('new entry is: ', newEntry)
@@ -51,10 +51,9 @@ const token = {
     },
     delete: (req, res) => {
         let { token, userId } = req.body
-        console.log('token id: ', token, userId)
         let searchFor = { userId }
         User.find(searchFor, function(err, query){
-            if(err) console.log('trying to find user so we can delete the token bound to the user: ', userId)
+            if(err) console.log('trying to find user so we can delete the token bound to the user: ', err)
             let result = query[0]
             if(result.pushToken){
                 result.pushToken = ""
@@ -105,7 +104,7 @@ const photo = {
         let { userId } = req.query 
         let model = { userId }
         User.find(model, function(err, result){
-            if (err) console.log('could not find user from database: ', model.userId)
+            if (err) console.log('could not find user from database: ', err)
             console.log('from our database we got: ', result)
             res.send(result)
         })
@@ -116,7 +115,7 @@ const photo = {
             userId: requestId
         }
         User.find(model, function(err, result){
-            if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
+            if(err) console.log('trying to save new photos, but cant find user: ', err)
             if(result.length > 0){
                 console.log('weve retrieved from db: ', result)
                 let toSave = result[0]
@@ -154,19 +153,46 @@ const photo = {
               })
               toSave.save()
                 .then(function(result){
-                console.log('2: created New user!!! and saved photo')
-                //trigger notifciation
-                // if(push.isToken(Token)){
-                //     push.sendPush(Token)
-                // }
-                res.send('createdNew User, photo saved')
-              })
-              .catch(function(err){
-                console.log('2: did not save photos successfully')
-                res.send('photo did not save, err!')
+                    console.log('2: created New user!!! and saved photo')
+                    res.send('createdNew User, photo saved')
+                })
+                .catch(function(err){
+                    console.log('2: did not save photos successfully')
+                    res.send('photo did not save, err!')
               })
             }
             
+        })
+    },
+    delete : (req, res) => {
+        let { userId, photo } = req.body
+        let model = {
+            userId
+        }
+        User.find(model, function(err, result){
+            if(err) console.log('trying to delete photo, but got err ', err)
+            if(result.length > 0){
+                let item = result[0]
+                let { photos } = item
+                let ind = photos.indexOf(photo)
+                let removed;
+                console.log('photos list: ', photos)
+                if(ind >= 0){
+                   removed = photos.splice(ind, 1)
+                }
+                console.log('we removed photo: ', removed)
+                item.save()
+                  .then(function(result){
+                    console.log('modified photos ')
+                    res.send('deleted photo 1')
+                })
+                  .catch(function(err){
+                    console.log('did NOT delete photo')
+                    res.send('photo did not save, err!')
+                })
+            } else {
+                res.send('did not find user')
+            }
         })
     }
 }
