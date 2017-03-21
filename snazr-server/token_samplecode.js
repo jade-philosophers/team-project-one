@@ -95,3 +95,5 @@ console.log(a())
 const a = () => {
   console.log('foo')
 }
+console.log('hello')
+  

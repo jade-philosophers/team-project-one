@@ -7,29 +7,70 @@ mongoose.connect('mongodb://localhost/snazr');
 
 const token = {
     post: (req, res) => {
-        let { token, userId } = req.body
+        let { userId } = req.body
+        let tokenObject = req.body.token
+        let token = JSON.stringify(tokenObject)
         let searchFor = { userId }
         User.find(searchFor, function(err, result){
             if(err) console.log('trying to find user to save push tokens,user: ', searchFor.userId)
             if(result.length > 0 ){
                 let newEntry = result[0]
+                console.log('new entry is: ', newEntry)
                 newEntry.pushToken = token
+                console.log('entry to DB: ', newEntry)
                 newEntry.save()
                     .then(function(result){
-                        console.log('saved token succesfully')
-                        res.send('token saved')
+                        console.log('1saved token succesfully')
+                        res.send('1token saved')
+                    })
+                    .catch(function(err){
+                        console.log('ERRROR IS: ', err)
+                        console.log('1: did not save photos successfully')
+                        res.send('1photo did not save, err!') 
                     })
             } else {
                 let newEntry = new User({
+                    userId,
+                    pushToken: token,
+                    photos: []
 
                 })
+                newEntry.save()
+                    .then(function(result){
+                        console.log('2saved token succesfully')
+                        res.send('2token saved')
+                    })
+                    .catch(function(err){
+                        console.log('ERRROR IS: ', err)
+                        console.log('2: did not save photos successfully')
+                        res.send('2photo did not save, err!') 
+                    })
 
             }
         })
-
-        res.send('hey thi sis get')
     },
     delete: (req, res) => {
+        let { token, userId } = req.body
+        let searchFor = { userId }
+        User.find(searchFor, function(err, query){
+            if(err) console.log('trying to find user so we can delete the token bound to the user: ', userId)
+            let result = query[0]
+            if(result.pushToken){
+                delete result.pushToken
+                result.save()
+                    .then(function(result){
+                            console.log('deleted token succesfully')
+                            res.send('token deleted')
+                        })
+                        .catch(function(err){
+                            console.log('ERRROR IS: ', err)
+                            console.log('delete token failed')
+                            res.send('delete token failed, err!') 
+                        })
+            } else {
+                res.send('user doesnt even exist, no need to delete any tokens')
+            }
+        })
         res.send('hello this is post')
     }
 }
@@ -91,22 +132,22 @@ const photo = {
                 console.log('ERRROR IS: ', err)
                 console.log('1: did not save photos successfully')
                 res.send('photo did not save, err!')
-                })
+              })
             } else {
-                let photos = [ cloudStorageUrl ]
-                let toSave = new User({
-                    userId: requestId,
-                    photos: photos
-                })
-                toSave.save()
-                  .then(function(result){
-                  console.log('2: saved photos successfully')
-                  res.send('photo saved')
-                })
-                .catch(function(err){
-                  console.log('2: did not save photos successfully')
-                  res.send('photo did not save, err!')
-                })
+              let photos = [ cloudStorageUrl ]
+              let toSave = new User({
+                userId: requestId,
+                photos: photos
+              })
+              toSave.save()
+                .then(function(result){
+                console.log('2: saved photos successfully')
+                res.send('photo saved')
+              })
+              .catch(function(err){
+                console.log('2: did not save photos successfully')
+                res.send('photo did not save, err!')
+              })
             }
             
         })
