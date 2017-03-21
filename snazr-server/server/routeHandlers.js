@@ -1,7 +1,7 @@
 const { client } = require('./cache/redis.js')
 const User = require('./models/users');
 const mongoose = require('mongoose');
-const Expo = require('exponent-server-sdk');
+const push = require('./pushNotification.js')
 
 mongoose.connect('mongodb://localhost/snazr');
 
@@ -118,16 +118,25 @@ const photo = {
         User.find(model, function(err, result){
             if(err) console.log('trying to save new photos, but cant find user: ', model.userId)
             if(result.length > 0){
-            console.log('weve retrieved from db: ', result)
-            let toSave = result[0]
-            let photos = [...toSave.photos]
-            toSave.photos = [ cloudStorageUrl, ...photos ]
+                console.log('weve retrieved from db: ', result)
+                let toSave = result[0]
+                let stringToken = toSave.pushToken
+                let objToken = JSON.parse(stringToken)
+                let Token = objToken.value
+                console.log('our token is: ', Token)
+                let photos = [...toSave.photos]
+                toSave.photos = [ cloudStorageUrl, ...photos ]
 
-            toSave.save()
-              .then(function(result){
-                console.log('1: saved photos successfully')
-                res.send('photo saved')
-              })
+              toSave.save()
+                .then(function(result){
+                  console.log('1: saved photos successfully')
+                  console.log('testing PUSH TOKEN: ', push.isToken(Token))
+                  if(push.isToken(Token)){
+                      push.sendPush(Token)
+                  }
+                  // trigger notifcation
+                  res.send('photo saved')
+                })
               .catch(function(err){
                 console.log('ERRROR IS: ', err)
                 console.log('1: did not save photos successfully')
@@ -141,8 +150,12 @@ const photo = {
               })
               toSave.save()
                 .then(function(result){
-                console.log('2: saved photos successfully')
-                res.send('photo saved')
+                console.log('2: created New user!!! and saved photo')
+                //trigger notifciation
+                // if(push.isToken(Token)){
+                //     push.sendPush(Token)
+                // }
+                res.send('createdNew User, photo saved')
               })
               .catch(function(err){
                 console.log('2: did not save photos successfully')
@@ -153,6 +166,8 @@ const photo = {
         })
     }
 }
+
+
 
 const handlers = {
     token,
