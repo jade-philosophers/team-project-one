@@ -51,12 +51,13 @@ const token = {
     },
     delete: (req, res) => {
         let { token, userId } = req.body
+        console.log('token id: ', token, userId)
         let searchFor = { userId }
         User.find(searchFor, function(err, query){
             if(err) console.log('trying to find user so we can delete the token bound to the user: ', userId)
             let result = query[0]
             if(result.pushToken){
-                delete result.pushToken
+                result.pushToken = ""
                 result.save()
                     .then(function(result){
                             console.log('deleted token succesfully')
@@ -71,7 +72,6 @@ const token = {
                 res.send('user doesnt even exist, no need to delete any tokens')
             }
         })
-        res.send('hello this is post')
     }
 }
 
