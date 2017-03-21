@@ -20,15 +20,6 @@ export default class LoginScreen extends Component {
     this._logIn = this._logIn.bind(this);
   }
 
-
-  async _initialLogin () {
-    const session = await AsyncStorage.getItem('com.snazr.name');
-    this.setState({session: session});
-    if(session) {
-      this.props.navigator.push(Router.getRoute('home'));
-    }
-  }
-
   async componentWillMount() {
     await images.map(image => {
       Asset.fromModule(image).downloadAsync();
@@ -36,6 +27,16 @@ export default class LoginScreen extends Component {
     Asset.fromModule(videoSource).downloadAsync().then(()=> {
       this.setState({loaded: true});
     });
+  }
+
+  async _initialLogin () {
+    const session = await AsyncStorage.getItem('com.snazr.name');
+    this.setState({session: session});
+    if(session) {
+      setTimeout(() => {
+        this.props.navigator.push(Router.getRoute('home'));
+      }, 1000);
+    }
   }
 
   async _logIn() {
@@ -68,7 +69,7 @@ export default class LoginScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.background}>
-          <Expo.Components.Video style={{borderRadius: Dimensions.get('window').width/2,  width: Dimensions.get('window').width, height: Dimensions.get('window').height}} resizeMode="cover" source={videoSource} repeat={true} mute={true} />
+          <Expo.Components.Video style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}} resizeMode="cover" source={videoSource} repeat={true} mute={true} />
         </View>
         <View style={styles.container}>
           <View>

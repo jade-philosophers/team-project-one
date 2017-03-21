@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Expo from 'expo';
 import { AsyncStorage, Image, View, Text, StyleSheet } from 'react-native';
+import { Icon } from 'native-base';
 import helpers from '../config/util';
 import { RNS3 } from 'react-native-aws3';
 import config from '../config/secure';
@@ -100,12 +101,20 @@ export default class Map extends Component {
 
     return (
       <MapView style={{flex: 1}} region={this.state.region} onRegionChange={this._onRegionChange}>
-        <Marker key={this.state.id} coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} title={this.state.name} onPress={this._setTargetCoords} onCalloutPress={this._takeImage}>
+        <Marker key={this.state.id} coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} onPress={this._setTargetCoords} onCalloutPress={this._takeImage}>
           <Image source={{uri: `http://graph.facebook.com/${this.state.id}/picture?type=small`}} style={styles.markers} />
+            <Callout>
+              <Text style={{textAlign: 'center'}}>{this.state.name.split(' ')[0]}</Text>
+              <Icon name="camera" style={{textAlign: 'center'}} />
+            </Callout>
         </Marker>
         {this.props.nearbyPeople.map((person, index) => {
-          return <Marker key={index} coordinate={{latitude: person.latPrecise, longitude: person.lngPrecise}} title={person.name} onPress={this._setTargetCoords}  onCalloutPress={this._takeImage} >
+          return <Marker key={index} coordinate={{latitude: person.latPrecise, longitude: person.lngPrecise}} onPress={this._setTargetCoords}  onCalloutPress={this._takeImage} >
                   <Image source={{uri: `http://graph.facebook.com/${person.userId}/picture?type=small`}} style={styles.markers} />
+                    <Callout>
+                      <Text style={{textAlign: 'center'}}>{person.name.split(' ')[0]}</Text>
+                      <Icon name="camera" style={{textAlign: 'center'}} />
+                    </Callout>
                  </Marker>})}
       </MapView>
     );
