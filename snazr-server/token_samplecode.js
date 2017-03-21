@@ -30,7 +30,7 @@ let isPushToken = Expo.isExponentPushToken(somePushToken);
 function sendPush(token){
     expo.sendPushNotificationsAsync([{
       // The push token for the app user to whom you want to send the notification 
-      to: `ExponentPushToken[${token}]`,
+      to: token,
       sound: 'default',
       body: 'This is a test notification',
       data: {withSome: 'data'},
@@ -96,4 +96,3 @@ const a = () => {
   console.log('foo')
 }
 console.log('hello')
-  

@@ -54,21 +54,23 @@ const token = {
         let searchFor = { userId }
         User.find(searchFor, function(err, query){
             if(err) console.log('trying to find user so we can delete the token bound to the user: ', err)
-            let result = query[0]
-            if(result.pushToken){
-                result.pushToken = ""
-                result.save()
-                    .then(function(result){
-                            console.log('deleted token succesfully')
-                            res.send('token deleted')
-                        })
-                        .catch(function(err){
-                            console.log('ERRROR IS: ', err)
-                            console.log('delete token failed')
-                            res.send('delete token failed, err!') 
-                        })
+            if(query.length > 0){
+                let result = query[0]
+                if(result.pushToken){
+                    result.pushToken = ""
+                    result.save()
+                        .then(function(result){
+                                console.log('deleted token succesfully')
+                                res.send('token deleted')
+                            })
+                            .catch(function(err){
+                                console.log('ERRROR IS: ', err)
+                                console.log('delete token failed')
+                                res.send('delete token failed, err!') 
+                            })
+                }
             } else {
-                res.send('user doesnt even exist, no need to delete any tokens')
+                res.send('user doesnt exist, no need to delete any tokens')
             }
         })
     }
