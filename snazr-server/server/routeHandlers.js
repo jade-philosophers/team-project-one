@@ -119,11 +119,16 @@ const photo = {
             if(result.length > 0){
                 console.log('weve retrieved from db: ', result)
                 let toSave = result[0]
-                let stringToken = toSave.pushToken
-                let objToken = JSON.parse(stringToken)
+                let stringToken, objToken
+                if(toSave.pushToken){
+                    stringToken = toSave.pushToken
+                    objToken = JSON.parse(stringToken)         
+                }
                 let Token;
                 if(objToken.value){
                     Token = objToken.value
+                } else {
+                    Token = ''
                 }
                 console.log('our token is: ', Token)
                 let photos = [...toSave.photos]
