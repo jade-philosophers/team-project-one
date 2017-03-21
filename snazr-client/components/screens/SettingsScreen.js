@@ -10,7 +10,11 @@ export default class SettingsScreen extends Component {
   constructor(props) {
     super(props);
     this._logOut = this._logOut.bind(this);
-    this._goToInstructions = this._goToInstructions.bind(this);
+    this._goToHowItWorks = this._goToHowItWorks.bind(this);
+    this._goToTermsOfService = this._goToTermsOfService.bind(this);
+    this._goToPrivacy = this._goToPrivacy.bind(this);
+    this._goToAboutTheTeam = this._goToAboutTheTeam.bind(this);
+    this._goToHelpAndSupport = this._goToHelpAndSupport.bind(this);
     this._goToHome = this._goToHome.bind(this);
     this._goToMap = this._goToMap.bind(this);
   }
@@ -35,8 +39,8 @@ export default class SettingsScreen extends Component {
     const loc = await AsyncStorage.getItem('com.snazr.location');
     if (helpers.toggled) {
       helpers.toggled = !helpers.toggled;
-      axios.delete(helpers.HOST_URL + 'api/toggled_users', {data: this.state.location}).then(response => {
-        console.log('successfully removed');
+      axios.post(helpers.HOST_URL + 'api/toggle_off', JSON.parse(loc)).then(response => {
+          console.log('successfully removed');
       });
     }
     await AsyncStorage.clear().then(()=> {
@@ -44,24 +48,43 @@ export default class SettingsScreen extends Component {
     });
   }
 
-  _goToInstructions () {
-    this.props.navigator.push(Router.getRoute('instructions'));
+  _goToHowItWorks () {
+    this.props.navigator.push(Router.getRoute('howitworks'));
   }
+
+  _goToTermsOfService () {
+    this.props.navigator.push(Router.getRoute('termsofservice'));
+  }  
+
+  _goToPrivacy () {
+    this.props.navigator.push(Router.getRoute('privacy'));
+  }  
+
+  _goToAboutTheTeam () {
+    this.props.navigator.push(Router.getRoute('abouttheteam'));
+  }    
+  
+  _goToHelpAndSupport () {
+    this.props.navigator.push(Router.getRoute('helpandsupport'));
+  }  
 
   render() {
     return (
       <Container>
           <Content>
-              <ListItem onPress={this._goToInstructions}>
-                  <Text>Instructions</Text>
+              <ListItem onPress={this._goToHowItWorks}>
+                  <Text>How It Works</Text>
               </ListItem>
-              <ListItem>
+              <ListItem onPress={this._goToTermsOfService}>
+                  <Text>Terms Of Service</Text>
+              </ListItem>              
+              <ListItem onPress={this._goToPrivacy}>
                   <Text>Privacy</Text>
               </ListItem>
-              <ListItem>
-                  <Text>Terms Of Service</Text>
-              </ListItem>
-              <ListItem>
+              <ListItem onPress={this._goToAboutTheTeam}>
+                  <Text>About The Team</Text>
+              </ListItem>              
+              <ListItem onPress={this._goToHelpAndSupport}>
                   <Text>Help And Support</Text>
               </ListItem>
               <ListItem onPress={this._logOut}>
