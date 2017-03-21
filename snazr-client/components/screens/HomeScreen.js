@@ -1,30 +1,47 @@
 import React, { Component } from 'react';
-import { View, Switch, AsyncStorage, Image, Dimensions, TouchableWithoutFeedback, DeviceEventEmitter } from 'react-native';
+import { View, Switch, AsyncStorage, Image, Dimensions, TouchableWithoutFeedback, DeviceEventEmitter, AppRegistry } from 'react-native';
 import Router from '../navigation/Router';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem } from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem, Card, CardItem } from 'native-base';
 import Expo from 'expo';
 import axios from 'axios';
 import helpers from '../config/util';
 import registerForPushNotificationsAsync from '../config/getToken';
+// import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       toggled: false,
-      pictures: []
+      pictures: [],
+      notification: {}, 
+      showCard: false
     }
+
     this._getInitialToggle();
     this._getPictures();
     this._refresh = this._refresh.bind(this);
     this._goToMap = this._goToMap.bind(this);
     this._done = this._done.bind(this);
+    this._deletePhoto = this._deletePhoto.bind(this);
+    this._downloadPhoto = this._downloadPhoto.bind(this);
+    this._handleNotification = this._handleNotification.bind(this);
     this._goToSettings = this._goToSettings.bind(this);
     this._toggleLocation = this._toggleLocation.bind(this);
     this._getAndSendLocationData = this._getAndSendLocationData.bind(this);
     this._searchAndRemoveLocationData = this._searchAndRemoveLocationData.bind(this);
   }
-  
+
+  // componentWillMount() {
+  //   this._notificationSubscription = DeviceEventEmitter.addListener(
+  //     'Exponent.notification', this._handleNotification
+  //   );
+  // }
+
+  // _handleNotification(notification) {
+  //   this.setState({notification: notification, showCard: !this.state.showCard});
+  // }
+
   async _getInitialToggle() {
     const toggle = await AsyncStorage.getItem('com.snazr.toggled');
     if(!toggle) {
@@ -116,7 +133,30 @@ export default class HomeScreen extends Component {
     this.setState({photo: undefined});
   }
 
+  _deletePhoto() {
+    axios.delete(helpers.HOST_URL + 'api/photos', {data: {userId: this.state.id, photo: this.state.photo}}).then(response => {
+      console.log('photo deleted');
+      this.setState({photo: undefined});
+      this._refresh();
+    });
+  }
+
+  _downloadPhoto() {
+    console.log('Downloading, feature not implemented completely yet');
+    // RNFetchBlob.config({
+    //   fileCache : true,
+    //   appendExt : 'jpg'
+    //   })
+    //   .fetch('GET', this.state.photo, {
+    //   //some headers ..
+    //   })
+    //   .then((res) => {
+    //   console.log('The file saved to ', res.path())
+    // })
+  }
+
   render() {
+
     if(this.state.photo) {
       return (
           <Container>
@@ -138,10 +178,10 @@ export default class HomeScreen extends Component {
               </Content>
               <Footer>
                   <FooterTab>
-                      <Button >
+                      <Button onPress={this._downloadPhoto}>
                         <Icon name="download" />
                       </Button>
-                      <Button >
+                      <Button onPress={this._deletePhoto}>
                         <Icon name="trash" />
                       </Button>
                   </FooterTab>
@@ -165,6 +205,7 @@ export default class HomeScreen extends Component {
               </Right>
             </Header>
             <Content>
+              {/*{this.state.showCard ? <Card><CardItem><Body><Text>{this.state.notification.data}</Text></Body></CardItem></Card> : <Text></Text> }*/}
               <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
                 {this.state.pictures.map((photo, index) => <TouchableWithoutFeedback key={index} onPressIn={this._goToImg.bind(this, photo)}><Image source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/></TouchableWithoutFeedback> )}
               </View>
