@@ -97,6 +97,21 @@ const toggle = {
         let user = req.body
         client.util.del(user, client);
         res.send('deleting user from discovered list')
+    },
+    put: (req, res) => {
+        let { oldLoc, newLoc } = req.body
+        console.log('the locations are : ', oldLoc, newLoc)
+        client.util.del(oldLoc, client)
+            .then( () => {
+                client.util.add(newLoc, client)
+            })
+            .then( () => {
+                res.send('updated user location in cache successfully')
+            })
+            .catch( () => {
+                res.send('failed to update user location in cache')
+            })
+        
     }
 }
 

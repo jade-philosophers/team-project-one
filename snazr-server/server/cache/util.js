@@ -62,6 +62,7 @@ const generateRange = (data, range) => {
 }
 
 const addNew = (data, client) => new Promise( (resolve, reject) =>{
+    console.log('in the util the data is : ', data)
     // expect data to be { lng:123.22, lat:56.33, id:12345 } with 2 digit precision
     // client.hkeys(data.lng, function(err, lats){
     //     console.log('all lats are: ', lats)
