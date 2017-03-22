@@ -34,7 +34,7 @@ export default class MapScreen extends Component {
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
       let { latitude , longitude } = position.coords;
-      if ( Math.abs(latitude - this.state.latitude) > 0.002 || Math.abs(longitude - this.state.longitude) > 0.002) {
+      if ( helpers._distance( longitude - this.state.longitude, latitude - this.state.latitude ) > 0.002 ) {
         this.setState({ latitude: latitude, longitude: longitude });
         this._getNearby();
       }

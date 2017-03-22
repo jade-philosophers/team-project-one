@@ -96,7 +96,7 @@ export default class HomeScreen extends Component {
           AsyncStorage.setItem('com.snazr.location', JSON.stringify(locationObj));
           this.watchID = navigator.geolocation.watchPosition(position => {
             let { latitude , longitude } = position.coords;
-            if ( Math.abs(latitude - this.state.latitude) > 0.002 || Math.abs(longitude - this.state.longitude) > 0.002) {
+            if ( helpers._distance( longitude - this.state.longitude, latitude - this.state.latitude ) > 0.002 ) {
               this._updateLocation(longitude, latitude);
             }
           })
