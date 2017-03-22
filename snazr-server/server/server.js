@@ -44,6 +44,7 @@ app.route('/api/toggled_users')
   .get(handlers.toggle.get)
   .post(handlers.toggle.post)
   .delete(handlers.toggle.delete)
+  .put(handlers.toggle.put)
 
 app.route('/api/photos')
   .get(handlers.photo.get)
