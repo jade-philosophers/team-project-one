@@ -84,25 +84,38 @@ export default class HomeScreen extends Component {
   }
 
   async _getAndSendLocationData() {
-    helpers._getPosition().then(position => {
-      let { longitude, latitude } = position.coords;
-      console.log('sending location', this.state.id, this.state.name);
-      let locationObj = {
-       userId: this.state.id,
-       name: this.state.name,
-       lng: longitude.toFixed(2),
-       lat: latitude.toFixed(2),
-       latPrecise: latitude,
-       lngPrecise: longitude,
-      }
-      axios.post(helpers.HOST_URL + 'api/toggled_users' , locationObj).then(response => {
-        console.log('successfully posted');
-        this.setState({location: locationObj});
-      });
-      AsyncStorage.setItem('com.snazr.location', JSON.stringify(locationObj));
-    });
-    
+    navigator.geolocation.getCurrentPosition(position => {
+        let { latitude , longitude } = position.coords;
+        let locationObj = { userId: this.state.id, name: this.state.name, lng: longitude.toFixed(2), lat: latitude.toFixed(2), latPrecise: latitude, lngPrecise: longitude }
+        console.log('sending location', this.state.id, this.state.name);
+        axios.post(helpers.HOST_URL + 'api/toggled_users' , locationObj).then(response => {
+          console.log('successfully posted');
+          this.setState({location: locationObj});
+          return response;
+        }).then( response => {
+          AsyncStorage.setItem('com.snazr.location', JSON.stringify(locationObj));
+          this.watchID = navigator.geolocation.watchPosition(position => {
+            let { latitude , longitude } = position.coords;
+            if ( Math.abs(latitude - this.state.latitude) > 0.002 || Math.abs(longitude - this.state.longitude) > 0.002) {
+              this._updateLocation(longitude, latitude);
+            }
+          })
+        }).catch( err => console.log('ERROR: location not posted' , err));
+      }), error => alert(JSON.stringify(error)), {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000} 
   }
+
+  async _updateLocation(longitude, latitude) {
+    console.log('UPDATING location', this.state.id, this.state.name);
+    let oldLocation = await AsyncStorage.getItem('com.snazr.location');
+    oldLocation = JSON.parse(oldLocation);
+    let newLocation = { userId: this.state.id, name: this.state.name, lng: longitude.toFixed(2), lat: latitude.toFixed(2), latPrecise: latitude, lngPrecise: longitude };
+    axios.put(helpers.HOST_URL + 'api/toggled_users' , {oldLoc: oldLocation, newLoc: newLocation} ).then(response => {
+      console.log('successfully updated!');
+      this.setState({location: newLocation});
+      AsyncStorage.setItem('com.snazr.location', JSON.stringify(newLocation));
+    });
+  }
+
 
   async _searchAndRemoveLocationData() {
     console.log('removing');
