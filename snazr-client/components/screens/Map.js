@@ -38,6 +38,7 @@ export default class Map extends Component {
     this._setTargetCoords = this._setTargetCoords.bind(this);
   }
 
+
   componentWillReceiveProps(nextProps) {
     let region = {
       latitude: nextProps.latitude,
@@ -98,16 +99,8 @@ export default class Map extends Component {
   }
 
   render() {
-
     return (
       <MapView style={{flex: 1}} region={this.state.region} onRegionChange={this._onRegionChange}>
-        <Marker key={this.state.id} coordinate={{latitude: this.props.latitude, longitude: this.props.longitude}} onPress={this._setTargetCoords} onCalloutPress={this._takeImage}>
-          <Image source={{uri: `http://graph.facebook.com/${this.state.id}/picture?type=small`}} style={styles.markers} />
-            <Callout>
-              <Text style={{textAlign: 'center'}}>{this.state.name.split(' ')[0]}</Text>
-              <Icon name="camera" style={{textAlign: 'center'}} />
-            </Callout>
-        </Marker>
         {this.props.nearbyPeople.map((person, index) => {
           return <Marker key={index} coordinate={{latitude: person.latPrecise, longitude: person.lngPrecise}} onPress={this._setTargetCoords}  onCalloutPress={this._takeImage} >
                   <Image source={{uri: `http://graph.facebook.com/${person.userId}/picture?type=small`}} style={styles.markers} />

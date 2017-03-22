@@ -3,15 +3,7 @@ import Expo, { Permissions } from 'expo';
 
 const helpers = {
   toggled: false,
-  HOST_URL: 'http://0db132e7.ngrok.io/',
-  _getPosition: async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === 'granted') {
-      return Expo.Location.getCurrentPositionAsync({enableHighAccuracy: true});
-    } else {
-      throw new Error('Location permission not granted');
-    }
-  } 
+  HOST_URL: 'http://000d2c22.ngrok.io/'
 }
 
 

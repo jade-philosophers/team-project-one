@@ -13,7 +13,7 @@ export default class MapScreen extends Component {
       longitude: 0,
       nearbyPeople: []
     }
-    this._getPosition();
+    this._getNearby();
   }
 
   static route = {
@@ -24,15 +24,28 @@ export default class MapScreen extends Component {
     }
   }
 
-  _getPosition() {
-    helpers._getPosition().then(position => {
-      let { latitude, longitude } = position.coords;
-      this.setState({latitude: latitude, longitude: longitude });
-      let obj = { params: { lng: longitude.toFixed(2), lat: latitude.toFixed(2)} }
-      axios.get(helpers.HOST_URL + 'api/toggled_users', obj).then(response => {
-        console.log(response.data, 'users around');
-        this.setState({ nearbyPeople: response.data });
-      });
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition( position => {
+      let { latitude , longitude } = position.coords;
+      this.setState({ latitude: latitude, longitude: longitude });
+      this._getNearby();
+      }, error => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      let { latitude , longitude } = position.coords;
+      if ( Math.abs(latitude - this.state.latitude) > 0.002 || Math.abs(longitude - this.state.longitude) > 0.002) {
+        this.setState({ latitude: latitude, longitude: longitude });
+        this._getNearby();
+      }
+    });
+  }
+
+  _getNearby() {
+    let obj = { params: { lng: this.state.longitude.toFixed(2), lat: this.state.latitude.toFixed(2)} }
+    axios.get(helpers.HOST_URL + 'api/toggled_users', obj).then(response => {
+      console.log(response.data, 'users around');
+      this.setState({ nearbyPeople: response.data });
     });
   }
 
