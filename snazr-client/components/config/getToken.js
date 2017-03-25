@@ -1,4 +1,5 @@
 import { Permissions, Notifications } from 'expo';
+import { AsyncStorage } from 'react-native';
 import helpers from './util';
 import axios from 'axios';
 const PUSH_ENDPOINT = helpers.HOST_URL;
@@ -8,6 +9,7 @@ export default async function registerForPushNotificationsAsync(userId, method) 
     return;
   }
   let token = await Notifications.getExponentPushTokenAsync();
+  // AsyncStorage.setItem('com.snazr.notification', token);
   return axios(helpers.HOST_URL + 'api/push_token', {
     method: method,
     headers: {

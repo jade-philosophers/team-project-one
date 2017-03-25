@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import Expo, { Asset } from 'expo';
 import { Text, View, StyleSheet, AsyncStorage, Image, Animated, Dimensions } from 'react-native';
 import { Icon } from 'native-base';
-import helpers from '../config/util';
-import Router from '../navigation/Router';
-import config from '../config/secure';
-const videoSource = require('./../../assets/icons/test.mp4');
-const images = [require('../../assets/icons/app.png'), require('../../assets/icons/app2.png'), require('../../assets/icons/test-ss.png')];
+import helpers from '../../config/util';
+import Router from '../../navigation/Router';
+import config from '../../config/secure';
+const videoSource = require('./../../../assets/icons/test.mp4');
+const images = [require('../../../assets/icons/app.png'), require('../../../assets/icons/app2.png'), require('../../../assets/icons/test-ss.png')];
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -30,8 +30,8 @@ export default class LoginScreen extends Component {
   }
 
   async _initialLogin () {
-    const session = await AsyncStorage.getItem('com.snazr.name');
-    this.setState({session: session});
+    let session = await AsyncStorage.getItem('com.snazr.user');
+    this.setState({session: JSON.parse(session)});
     if(session) {
       setTimeout(() => {
         this.props.navigator.push(Router.getRoute('home'));
@@ -48,9 +48,12 @@ export default class LoginScreen extends Component {
         try {
           const response = await fetch(`https://graph.facebook.com/me?access_token=${data.token}`);
           const user = (await response.json());
-          const resultToken = await AsyncStorage.setItem('com.snazr', data.token);
-          const resultId = await AsyncStorage.setItem('com.snazr.id', user.id );
-          const resultName = await AsyncStorage.setItem('com.snazr.name', user.name);
+          const userObj = {
+            userId: user.id,
+            name: user.name,
+            token: data.token
+          }
+          const storeObj = await AsyncStorage.setItem('com.snazr.user', JSON.stringify(userObj));
           this.props.navigator.push(Router.getRoute('home'));
         } catch (error) {
           console.log('Storage error: ' + error.message);
