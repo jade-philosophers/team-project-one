@@ -1,12 +1,12 @@
 # Project Name
 
-> Pithy project description
+SnazR 
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Eric Chen
+  - __Scrum Master__: Felix Tran
+  - __Development Team Members__: Veer Ganghwal, Patrick Xie
 
 ## Table of Contents
 
@@ -20,32 +20,32 @@
 
 ## Usage
 
-> Some usage instructions
+Extremely sleek mobile application for crowd-sourcing photos.
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- React Native
+- Node
+- Redis
+- AWS
+- MongoDB
+- Express
 
 ## Development
 
 ### Installing Dependencies
 
-From within the root directory:
+From within the client directory:
 
-```sh
-sudo npm install -g bower
 npm install
-bower install
-```
+
+From within the server directory:
+
+npm install
 
 ### Roadmap
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
-
 
 ## Contributing
 
