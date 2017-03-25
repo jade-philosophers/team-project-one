@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Router from '../navigation/Router';
+import Router from '../../../navigation/Router';
 import { Container, Content, Text, ListItem } from 'native-base';
 
 export default class HelpAndSupportScreen extends Component {
