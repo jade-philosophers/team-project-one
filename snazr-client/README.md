@@ -1,4 +1,4 @@
-#Setting up the client for development
+##Setting up the client for development
 
 install expo.io on desktop and test mobile device
 
