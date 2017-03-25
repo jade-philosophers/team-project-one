@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { View, Switch, AsyncStorage, Image, Dimensions, TouchableWithoutFeedback, DeviceEventEmitter, AppRegistry } from 'react-native';
-import Router from '../navigation/Router';
+import Router from '../../navigation/Router';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon , Text, ListItem, Card, CardItem } from 'native-base';
 import Expo from 'expo';
 import axios from 'axios';
-import helpers from '../config/util';
-import registerForPushNotificationsAsync from '../config/getToken';
+import helpers from '../../config/util';
+import registerForPushNotificationsAsync from '../../config/getToken';
 // import RNFetchBlob from 'react-native-fetch-blob';
 
 export default class HomeScreen extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.state = {
       toggled: false,
       pictures: [],
-      notification: {}, 
-      showCard: false
+      notification: {}
     }
 
     this._getInitialToggle();
@@ -25,21 +25,23 @@ export default class HomeScreen extends Component {
     this._done = this._done.bind(this);
     this._deletePhoto = this._deletePhoto.bind(this);
     this._downloadPhoto = this._downloadPhoto.bind(this);
-    // this._handleNotification = this._handleNotification.bind(this);
     this._goToSettings = this._goToSettings.bind(this);
     this._toggleLocation = this._toggleLocation.bind(this);
     this._getAndSendLocationData = this._getAndSendLocationData.bind(this);
     this._searchAndRemoveLocationData = this._searchAndRemoveLocationData.bind(this);
+    // this._handleNotification = this._handleNotification.bind(this);
   }
 
   // componentWillMount() {
-  //   this._notificationSubscription = DeviceEventEmitter.addListener(
-  //     'Exponent.notification', this._handleNotification
-  //   );
+  //   this._notificationSubscription = DeviceEventEmitter.addListener('Exponent.notification', this._handleNotification);
   // }
 
   // _handleNotification(notification) {
-  //   this.setState({notification: notification, showCard: !this.state.showCard});
+  //   this.setState({notification: notification}, () => {
+  //     Toast.show({
+
+  //     });
+  //   });
   // }
 
   async _getInitialToggle() {
@@ -66,12 +68,12 @@ export default class HomeScreen extends Component {
   }
 
   async _getPictures() {
-    const id = await AsyncStorage.getItem('com.snazr.id');
-    const name = await AsyncStorage.getItem('com.snazr.name');
-    this.setState({ id: id, name: name });
+    let user = await AsyncStorage.getItem('com.snazr.user');
+    user = JSON.parse(user);
+    this.setState({ id: user.userId, name: user.name });
     const obj = {
       params: {
-        userId: id
+        userId: user.userId
       }
     }
     axios.get(helpers.HOST_URL + 'api/photos', obj )
@@ -96,7 +98,7 @@ export default class HomeScreen extends Component {
           AsyncStorage.setItem('com.snazr.location', JSON.stringify(locationObj));
           this.watchID = navigator.geolocation.watchPosition(position => {
             let { latitude , longitude } = position.coords;
-            if ( helpers._distance( longitude - this.state.longitude, latitude - this.state.latitude ) > 0.002 ) {
+            if ( helpers._distance( longitude - this.state.longitude, latitude - this.state.latitude ) > 0.0002 ) {
               this._updateLocation(longitude, latitude);
             }
           })
@@ -129,6 +131,7 @@ export default class HomeScreen extends Component {
         console.log('successfully removed');
       });
     }
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   _goToMap() {
@@ -176,76 +179,41 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-
-    if(this.state.photo) {
       return (
           <Container>
               <Header style={{backgroundColor: '#BA90FF'}}>
                   <Left>
-                    <Button transparent onPress={this._done}>
-                        <Text name='refresh' style={{color: '#ffff'}}>Done</Text>
-                    </Button>
+                    {this.state.photo ? <Button transparent onPress={this._done}><Text name='refresh' style={{color: '#ffff'}}>Done</Text></Button> :
+                                        <Button transparent onPress={this._refresh}><Icon name='refresh' style={{color: '#ffff'}}/></Button>}
                   </Left>
                   <Body>
-                      <Title style={{color:'#ffff'}}>Selection</Title>
+                      {this.state.photo? <Title style={{color:'#ffff'}}>Selection</Title> : <Title style={{color:'#ffff'}}>Gallery</Title>}
                   </Body>
                   <Right>
                     <Switch onValueChange={this._toggleLocation} value={this.state.toggled} />
                   </Right>
               </Header>
               <Content>
-                <Image source={{uri: this.state.photo}} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}/>
+                {this.state.photo ? <Image source={{uri: this.state.photo}} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}/> : 
+                    <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+                      {this.state.pictures.map((photo, index) => <TouchableWithoutFeedback key={index} onPressIn={this._goToImg.bind(this, photo)}><Image source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/></TouchableWithoutFeedback> )}
+                    </View>}
               </Content>
               <Footer>
-                  <FooterTab>
-                      <Button onPress={this._downloadPhoto}>
-                        <Icon name="download" />
-                      </Button>
-                      <Button onPress={this._deletePhoto}>
-                        <Icon name="trash" />
-                      </Button>
-                  </FooterTab>
+                {this.state.photo ? 
+                <FooterTab>
+                      <Button onPress={this._downloadPhoto}><Icon name="download" /></Button>
+                      <Button onPress={this._deletePhoto}><Icon name="trash" /></Button>
+                </FooterTab> :
+                <FooterTab>
+                      <Button active style={{backgroundColor: '#DDC5FF'}}><Icon name="home" style={{color: '#ffff'}}/></Button>
+                      <Button onPress={this._goToMap}><Icon name="map" /></Button>
+                      <Button onPress={this._goToSettings}><Icon name="settings" /></Button>
+                </FooterTab>
+                }
               </Footer>
           </Container>
       );
-    } else {
-      return(
-          <Container>
-            <Header style={{backgroundColor: '#BA90FF'}}>
-              <Left>
-                <Button transparent onPress={this._refresh}>
-                    <Icon name='refresh' style={{color: '#ffff'}}/>
-                </Button>
-              </Left>
-              <Body>
-                  <Title style={{color:'#ffff'}}>Gallery</Title>
-              </Body>
-              <Right>
-                <Switch onValueChange={this._toggleLocation} value={this.state.toggled} />
-              </Right>
-            </Header>
-            <Content>
-              {/*{this.state.showCard ? <Card><CardItem><Body><Text>{this.state.notification.data}</Text></Body></CardItem></Card> : <Text></Text> }*/}
-              <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
-                {this.state.pictures.map((photo, index) => <TouchableWithoutFeedback key={index} onPressIn={this._goToImg.bind(this, photo)}><Image source={{uri: photo}} style={{height: Dimensions.get('window').width/3.1, width: Dimensions.get('window').width/3.1, margin: 1}}/></TouchableWithoutFeedback> )}
-              </View>
-            </Content>
-            <Footer>
-              <FooterTab>
-                <Button active style={{backgroundColor: '#DDC5FF'}}>
-                  <Icon name="home" style={{color: '#ffff'}}/>
-                </Button>
-                <Button onPress={this._goToMap}>
-                  <Icon name="map" />
-                </Button>
-                <Button onPress={this._goToSettings}>
-                  <Icon name="settings" />
-                </Button>
-              </FooterTab>
-            </Footer>
-        </Container>  
-      )
     }
-  }
 }
 

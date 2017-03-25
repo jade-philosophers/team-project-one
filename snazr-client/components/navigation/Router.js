@@ -1,13 +1,13 @@
 import { createRouter } from '@expo/ex-navigation';
-import HomeScreen from '../screens/HomeScreen';
-import MapScreen from '../screens/MapScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import HowItWorksScreen from '../screens/HowItWorksScreen';
-import TermsOfServiceScreen from '../screens/TermsOfServiceScreen';
-import PrivacyScreen from '../screens/PrivacyScreen';
-import AboutTheTeamScreen from '../screens/AboutTheTeamScreen';
-import HelpAndSupportScreen from '../screens/HelpAndSupportScreen';
+import HomeScreen from '../screens/Home/HomeScreen';
+import MapScreen from '../screens/Map/MapScreen';
+import LoginScreen from '../screens/Login/LoginScreen';
+import SettingsScreen from '../screens/Settings/SettingsScreen';
+import HowItWorksScreen from '../screens/Settings/Information/HowItWorksScreen';
+import TermsOfServiceScreen from '../screens/Settings/Information/TermsOfServiceScreen';
+import PrivacyScreen from '../screens/Settings/Information/PrivacyScreen';
+import AboutTheTeamScreen from '../screens/Settings/Information/AboutTheTeamScreen';
+import HelpAndSupportScreen from '../screens/Settings/Information/HelpAndSupportScreen';
 
 
 const Router = createRouter(() => ({
